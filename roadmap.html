@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tadmor Token | خطة العمل - Roadmap</title>
+
+  <style>
+    /* 🌙 الأساسيات */
+    body {
+      background-color: #0a0a0a;
+      color: #fff;
+      font-family: "Tajawal", sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      overflow-x: hidden;
+      transition: direction 0.5s;
+    }
+
+    /* 🟣 الهيدر */
+    header {
+      background: #111;
+      padding: 20px;
+      border-bottom: 2px solid #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    header img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    header h1 {
+      color: #d4af37;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    /* 🔸 العنوان */
+    h2 {
+      color: #d4af37;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      font-size: 26px;
+    }
+
+    /* ✨ الشريط الزمني */
+    .roadmap-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #444, #d4af37, #444);
+      background-size: 200% 100%;
+      animation: shimmer 4s infinite linear;
+      z-index: 1;
+      transform: translateY(-50%);
+      border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* 🧱 البطاقات */
+    .roadmap-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .roadmap-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      min-height: 150px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: transform 0.8s ease, opacity 0.8s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .roadmap-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      box-shadow: 0 0 15px #d4af3777;
+    }
+
+    .roadmap-card::before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #d4af37, #b88a2a);
+      border: 2px solid #333;
+      box-shadow: 0 0 10px #d4af37aa;
+    }
+
+    .roadmap-card h3 {
+      color: #d4af37;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .roadmap-card p {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* 🌠 الرؤية المستقبلية */
+    .future-vision {
+      max-width: 900px;
+      margin: 80px auto 50px auto;
+      padding: 40px 20px;
+      background: linear-gradient(145deg, #111, #0e0e0e);
+      border: 1px solid #333;
+      border-radius: 15px;
+      box-shadow: 0 0 25px #d4af3740;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .future-vision h3 {
+      color: #d4af37;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .future-vision p {
+      color: #ccc;
+      line-height: 1.8;
+      font-size: 16px;
+      margin: 0 auto;
+      max-width: 700px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 🌍 التبديل بين اللغات */
+    .lang-switch {
+      margin: 30px auto 50px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .lang-switch img {
+      width: 32px;
+      height: 22px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .lang-switch img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px #d4af37aa;
+    }
+
+    /* 📱 الهواتف */
+    @media (max-width: 768px) {
+      h2 { font-size: 22px; }
+      .roadmap-card {
+        width: 90%;
+      }
+      .timeline-line {
+        display: none;
+      }
+      .roadmap-card::before {
+        display: none;
+      }
+      header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🟢 الهيدر -->
+  <header>
+    <img src="logo-small.png" alt="شعار تدمر">
+    <h1>Tadmor Token</h1>
+  </header>
+
+  <!-- 🔶 العنوان -->
+  <h2 id="title">خطة العمل (Roadmap)</h2>
+
+  <!-- 🧭 الخط الزمني -->
+  <div class="roadmap-wrapper">
+    <div class="timeline-line"></div>
+    <div class="roadmap-container" id="roadmap"></div>
+  </div>
+
+  <!-- 🌠 الرؤية المستقبلية -->
+  <section class="future-vision">
+    <h3 id="vision-title">الرؤية المستقبلية</h3>
+    <p id="vision-text">
+      تسعى عملة <strong>Tadmor Token</strong> لأن تكون رمزًا رقمياً يجمع بين الأصالة والحداثة، 
+      مستوحاة من حضارة تدمر التاريخية، ومعتمدة على تقنيات البلوكشين الحديثة لتوفير بيئة مالية شفافة، عادلة، ومجتمعية.
+    </p>
+  </section>
+
+  <!-- 🌍 تبديل اللغة بالأعلام -->
+   <!-- 🌠 الرؤية المستقبلية -->
+  <section class="future-vision">
+    <h3 id="vision-title">الرؤية المستقبلية</h3>
+    <p id="vision-text">
+      تسعى عملة <strong>Tadmor Token</strong> لأن تكون رمزًا رقمياً يجمع بين الأصالة والحداثة...
+    </p>
+  </section>
+
+  <!-- 🔗 زر العودة إلى الرئيسية -->
+  <div style="margin-top:30px;">
+    <a href="index.html" style="color:#d4af37;text-decoration:none;font-weight:bold;">⬅ العودة إلى الرئيسية</a>
+  </div>
+
+  <!-- 🌍 تبديل اللغة بالأعلام -->
+  <div class="lang-switch">
+    <img src="https://flagcdn.com/w40/sa.png" alt="العربية" title="العربية" onclick="setLanguage('ar')">
+    <img src="https://flagcdn.com/w40/us.png" alt="English" title="English" onclick="setLanguage('en')">
+  </div>
+
+  <!-- ⚙️ سكربت التحكم باللغات -->
+  <script>
+    const data = {
+      ar: {
+        dir: "rtl",
+        title: "خطة العمل (Roadmap)",
+        phases: [
+          { h: "المرحلة 1", p: "إطلاق مشروع تدمر وإنشاء العقد الذكي على شبكة BNB Smart Chain." },
+          { h: "المرحلة 2", p: "تصميم الموقع الرسمي وإطلاق القنوات الاجتماعية (تويتر، تيليجرام)." },
+          { h: "المرحلة 3", p: "إطلاق العملة رسميًا في PancakeSwap وتوزيعها على المجتمع." },
+          { h: "المرحلة 4", p: "إدراج العملة في منصات التداول وتوسيع الشراكات والمشاريع." },
+          { h: "المرحلة 5", p: "بناء تطبيق محفظة تدمر وإطلاق NFT خاص بالمجتمع." },
+        ],
+        visionTitle: "الرؤية المستقبلية",
+        visionText: "تسعى عملة Tadmor Token لأن تكون رمزًا رقمياً يجمع بين الأصالة والحداثة، مستوحاة من حضارة تدمر التاريخية، ومعتمدة على تقنيات البلوكشين الحديثة لتوفير بيئة مالية شفافة وعادلة."
+      },
+      en: {
+        dir: "ltr",
+        title: "Tadmor Token Roadmap",
+        phases: [
+          { h: "Phase 1", p: "Launch Tadmor Token and deploy the smart contract on BNB Smart Chain." },
+          { h: "Phase 2", p: "Design the official website and launch social media (Twitter, Telegram)." },
+          { h: "Phase 3", p: "Official launch on PancakeSwap and community token distribution." },
+          { h: "Phase 4", p: "List Tadmor Token on exchanges and expand strategic partnerships." },
+          { h: "Phase 5", p: "Develop Tadmor Wallet app and release community NFTs." },
+        ],
+        visionTitle: "Future Vision",
+        visionText: "Tadmor Token aims to merge heritage with innovation, inspired by the ancient city of Palmyra and powered by blockchain technology to build a transparent, community-driven financial ecosystem."
+      }
+    };
+
+    function setLanguage(lang) {
+      const content = data[lang];
+      document.body.dir = content.dir;
+      document.getElementById("title").innerText = content.title;
+      document.getElementById("vision-title").innerText = content.visionTitle;
+      document.getElementById("vision-text").innerText = content.visionText;
+
+      const roadmap = document.getElementById("roadmap");
+      roadmap.innerHTML = "";
+      content.phases.forEach(phase => {
+        const card = document.createElement("div");
+        card.className = "roadmap-card";
+        card.innerHTML = `<h3>${phase.h}</h3><p>${phase.p}</p>`;
+        roadmap.appendChild(card);
+      });
+
+      // مراقبة ظهور البطاقات
+      const cards = document.querySelectorAll('.roadmap-card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.2 });
+      cards.forEach(card => observer.observe(card));
+    }
+
+    // اللغة الافتراضية: العربية
+    setLanguage('ar');
+  </script>
+
+</body>
+</html>

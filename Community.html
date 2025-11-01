@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tadmor Community</title>
+  <style>
+    /* 🌌 الأساسيات */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #1b2735, #090a0f);
+      color: #fff;
+      text-align: center;
+      direction: ltr;
+      overflow-x: hidden;
+      transition: all 0.4s ease;
+    }
+
+    /* 🟨 الهيدر */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    header button {
+      background: #ffb703;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    header button:hover {
+      background: #ffd166;
+      transform: scale(1.05);
+    }
+
+    /* 🟩 القسم الترحيبي */
+    h1 {
+      font-size: 2.7rem;
+      margin-top: 60px;
+      background: linear-gradient(90deg, #ffb703, #fb8500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 15px auto 50px;
+      opacity: 0.85;
+    }
+
+    /* 🟦 بطاقات التواصل */
+    .social-section {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-bottom: 70px;
+      padding: 0 20px;
+    }
+
+    .social-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      width: 150px;
+      padding: 25px 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    .social-card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 183, 3, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .social-card img {
+      width: 55px;
+      height: 55px;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+      transition: transform 0.4s ease, filter 0.3s ease;
+    }
+
+    .social-card:hover img {
+      transform: rotate(10deg) scale(1.15);
+      filter: drop-shadow(0 0 10px #ffb703);
+    }
+
+    .social-card span {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* 🟥 الفوتر */
+    footer {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    .footer-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 25px;
+      margin-top: 10px;
+    }
+
+    .footer-icons img {
+      width: 30px;
+      height: 30px;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+
+    .footer-icons img:hover {
+      transform: scale(1.2);
+      opacity: 1;
+      filter: drop-shadow(0 0 8px #ffb703);
+    }
+
+    /* 📱 الاستجابة */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.9rem;
+        margin-top: 40px;
+      }
+      .social-card {
+        width: 120px;
+        padding: 18px;
+      }
+      .social-card img {
+        width: 45px;
+        height: 45px;
+      }
+      .footer-icons img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🟨 رأس الصفحة -->
+  <header>
+    <button id="backHome" data-en="Back Home" data-ar="الصفحة الرئيسية">Back Home</button>
+    <button id="langToggle">AR</button>
+  </header>
+
+  <!-- 🟩 الترحيب -->
+  <section>
+    <h1 data-en="Join the Tadmor Community!" data-ar="انضم إلى مجتمع تدمر النابض بالحياة!">Join the Tadmor Community!</h1>
+    <p data-en="Be part of our global community across all platforms. Let's grow together!"
+       data-ar="كن جزءاً من مجتمعنا العالمي عبر كل المنصات. لنبنِ المستقبل معاً!">
+       Be part of our global community across all platforms. Let's grow together!
+    </p>
+  </section>
+
+  <!-- 🟦 روابط المنصات -->
+  <section class="social-section">
+    <a href="https://www.instagram.com" target="_blank" class="social-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+      <span>Instagram</span>
+    </a>
+    <a href="https://www.youtube.com" target="_blank" class="social-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" />
+      <span>YouTube</span>
+    </a>
+    <a href="https://twitter.com" target="_blank" class="social-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="Twitter" />
+      <span>Twitter (X)</span>
+    </a>
+    <a href="https://t.me" target="_blank" class="social-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" />
+      <span>Telegram</span>
+    </a>
+    <a href="https://www.tiktok.com" target="_blank" class="social-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/TikTok_logo.svg" alt="TikTok" />
+
+      <span>TikTok</span>
+    </a>
+  </section>
+
+  <!-- 🟥 الفوتر -->
+  <footer>
+    <p data-en="Follow us and be part of Tadmor Token’s future!"
+       data-ar="تابعنا وكن جزءاً من مستقبل عملة تدمر!">
+       Follow us and be part of Tadmor Token’s future!
+    </p>
+
+    <div class="footer-icons">
+      <a href="https://www.instagram.com" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+      </a>
+      <a href="https://www.youtube.com" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" />
+      </a>
+      <a href="https://twitter.com" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="Twitter" />
+      </a>
+      <a href="https://t.me" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" />
+      </a>
+      <a href="https://www.tiktok.com" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" style="filter: invert(100%);" />
+
+      </a>
+    </div>
+  </footer>
+
+  <!-- 🧠 سكربت اللغة والتنقل -->
+  <script>
+    const langBtn = document.getElementById("langToggle");
+    const backBtn = document.getElementById("backHome");
+    const translatable = document.querySelectorAll("[data-en]");
+    let currentLang = "en";
+
+    langBtn.addEventListener("click", () => {
+      currentLang = currentLang === "en" ? "ar" : "en";
+      document.body.style.direction = currentLang === "ar" ? "rtl" : "ltr";
+      langBtn.textContent = currentLang === "en" ? "AR" : "EN";
+
+      translatable.forEach(el => {
+        el.textContent = el.getAttribute(`data-${currentLang}`);
+      });
+    });
+
+    backBtn.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  </script>
+
+</body>
+</html>

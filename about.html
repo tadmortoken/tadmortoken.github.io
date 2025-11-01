@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عن عملة تدمر | Tadmor Token</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      color: #fff;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      background-color: #111;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.8;
+      font-size: 1.1em;
+      margin: 10px auto;
+      max-width: 700px;
+    }
+
+    .lang-switch {
+      margin: 20px;
+    }
+
+    button {
+      background-color: #ffb400;
+      border: none;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffc933;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .back-btn:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">عن عملة تدمر</h1>
+    <div class="lang-switch">
+      <button onclick="setLang('ar')">العربية</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <main>
+    <p id="content">
+      عملة <strong>تدمر الرقمية</strong> هي مشروع ميم كوين مستوحى من الحضارة السورية القديمة، تهدف إلى الجمع بين التاريخ وروح
+      الإبداع الحديث. نسعى لبناء مجتمع رقمي قوي يعتمد على الشفافية والابتكار.
+    </p>
+    <button class="back-btn" onclick="goHome()">⬅ العودة للصفحة الرئيسية</button>
+  </main>
+
+  <script>
+    function setLang(lang) {
+      const title = document.getElementById("title");
+      const content = document.getElementById("content");
+
+      if (lang === "ar") {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+        title.textContent = "عن عملة تدمر";
+        content.innerHTML =
+          "عملة <strong>تدمر الرقمية</strong> هي مشروع ميم كوين مستوحى من الحضارة السورية القديمة، تهدف إلى الجمع بين التاريخ وروح الإبداع الحديث. نسعى لبناء مجتمع رقمي قوي يعتمد على الشفافية والابتكار.";
+      } else {
+        document.documentElement.lang = "en";
+        document.documentElement.dir = "ltr";
+        title.textContent = "About Tadmor Token";
+        content.innerHTML =
+          "<strong>Tadmor Token</strong> is a meme coin inspired by the ancient Syrian civilization of Palmyra. It aims to connect history with modern digital creativity, building a strong and transparent crypto community.";
+      }
+    }
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
