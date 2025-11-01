@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tadmor Tokenomics</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+
+    body {
+      font-family: "Cairo", sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(180deg, #0e0e0e 0%, #1a1a1a 100%);
+      color: #fff; display: flex; flex-direction: column;
+      align-items: center; min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 30px;
+      box-shadow: 0 0 15px rgba(255,215,0,0.2);
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    header h1 { font-size: 1.8em; color: #f0b90b; letter-spacing: 1px; }
+
+    .btn {
+      background: linear-gradient(135deg, #f0b90b, #cfa400);
+      color: #000; border: none; padding: 10px 18px;
+      border-radius: 10px; font-weight: bold;
+      cursor: pointer; margin-left: 10px;
+    }
+
+    .btn:hover { transform: scale(1.05); background: linear-gradient(135deg, #ffd700, #f0b90b); }
+
+    main { text-align: center; padding: 50px 20px; max-width: 1100px; }
+
+    h2, h3 { color: #f0b90b; }
+
+    p { color: #ccc; line-height: 1.8; font-size: 1.1em; }
+
+    /* 🔹 Layout: Chart + Table */
+    .distribution {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 40px; margin-top: 50px;
+    }
+
+    .chart-container, .table-container {
+      flex: 1 1 45%; min-width: 300px;
+    }
+
+    canvas {
+      background: rgba(0,0,0,0.4); border-radius: 20px;
+      padding: 20px; box-shadow: 0 0 25px rgba(240,185,11,0.15);
+    }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      box-shadow: 0 0 15px rgba(255,215,0,0.1);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    th, td { padding: 14px; border: 1px solid rgba(255,215,0,0.3); text-align: center; }
+    th { background: rgba(240,185,11,0.1); color: #f0b90b; }
+    td { background: rgba(255,255,255,0.03); }
+
+    /* 🔹 Counters */
+    .counters {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 30px; margin-top: 70px;
+    }
+
+    .counter-box {
+      background: rgba(240,185,11,0.05);
+      border: 1px solid rgba(240,185,11,0.3);
+      border-radius: 15px; width: 200px;
+      padding: 20px; box-shadow: 0 0 15px rgba(240,185,11,0.1);
+    }
+
+    .counter-number { font-size: 1.8em; color: #f0b90b; margin: 0; }
+    .counter-label { color: #ccc; font-size: 0.9em; }
+
+    /* 🔹 Why Hold Section */
+    .why-hold {
+      margin-top: 80px; padding: 40px;
+      background: rgba(240,185,11,0.05);
+      border: 1px solid rgba(240,185,11,0.3);
+      border-radius: 15px; opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+
+    .why-hold.visible { opacity: 1; transform: translateY(0); }
+
+    .why-grid {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 20px; margin-top: 25px;
+    }
+
+    .why-item {
+      background: rgba(255,255,255,0.05);
+      padding: 20px; border-radius: 10px;
+      border: 1px solid rgba(240,185,11,0.2);
+    }
+
+    .why-item h4 { color: #f0b90b; margin-bottom: 5px; }
+    .why-item p { color: #bbb; font-size: 0.9em; }
+
+    /* 🔹 Burn Section */
+    .burn-section {
+      margin-top: 80px; padding: 40px;
+      background: rgba(240,185,11,0.05);
+      border: 1px solid rgba(240,185,11,0.3);
+      border-radius: 15px; opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+
+    .burn-section.visible { opacity: 1; transform: translateY(0); box-shadow: 0 0 30px rgba(240,185,11,0.25); }
+
+    .burn-progress {
+      width: 100%; background: #222;
+      border-radius: 10px; height: 20px;
+      overflow: hidden; margin-top: 10px;
+    }
+
+    .burn-progress-inner {
+      height: 100%; width: 10%;
+      background: linear-gradient(90deg,#ffbb00,#ff8800);
+      box-shadow: 0 0 10px #ffbb00;
+    }
+
+    .flame {
+      display: inline-block; width: 10px; height: 10px; margin-left: 8px; position: relative;
+    }
+
+    .flame::before, .flame::after {
+      content: ""; position: absolute; bottom: 0; width: 10px; height: 10px;
+      border-radius: 50%; background: radial-gradient(circle,#ffae00,#ff4500);
+      animation: flicker 0.8s infinite alternate;
+    }
+
+    .flame::after {
+      width: 6px; height: 6px; left: 2px; bottom: 3px;
+      background: radial-gradient(circle,#ffe066,#ff6a00);
+      animation-delay: 0.3s;
+    }
+
+    @keyframes flicker { 0%{transform:scale(1) translateY(0);} 100%{transform:scale(1.2) translateY(-3px);} }
+
+    /* 🔹 CTA */
+    .cta {
+      margin-top: 80px;
+    }
+
+    .cta button {
+      background: linear-gradient(135deg,#f0b90b,#cfa400);
+      color:#000; padding:15px 30px; border:none;
+      border-radius:12px; font-size:1.2em; font-weight:bold;
+      cursor:pointer; box-shadow:0 0 20px rgba(240,185,11,0.3);
+    }
+
+    .cta button:hover { transform:scale(1.07); background:linear-gradient(135deg,#ffd700,#f0b90b); }
+
+    footer {
+      width: 100%; text-align: center;
+      padding: 20px; background: rgba(0,0,0,0.8);
+      color: #aaa; margin-top: 60px;
+    }
+
+    footer span { color: #f0b90b; }
+
+    @media (max-width: 768px) {
+      .distribution { flex-direction: column; align-items: center; }
+      .chart-container, .table-container { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 data-en="Tadmor Tokenomics" data-ar="اقتصاد عملة تدمر">Tadmor Tokenomics</h1>
+    <div>
+      <button class="btn" id="homeBtn" data-en="Home" data-ar="الرئيسية">Home</button>
+      <button class="btn" id="langToggle">AR</button>
+    </div>
+  </header>
+
+  <main>
+    <h2 data-en="Token Distribution" data-ar="توزيع العملة">Token Distribution</h2>
+    <p data-en="The Tadmor Token (TDMR) has a total supply of 1,000,000,000 coins ensuring sustainable and fair growth."
+       data-ar="عملة تدمر (TDMR) تحتوي على إجمالي عرض قدره 1,000,000,000 عملة لضمان نمو عادل ومستدام.">
+    </p>
+
+    <div class="distribution">
+      <div class="chart-container">
+        <canvas id="tokenChart"></canvas>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th data-en="Category" data-ar="الفئة">Category</th>
+              <th data-en="Percentage" data-ar="النسبة">Percentage</th>
+              <th data-en="Purpose" data-ar="الغاية">Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td data-en="Development" data-ar="التطوير">Development</td><td>20%</td><td data-en="Support & growth" data-ar="الدعم والنمو">Support & growth</td></tr>
+            <tr><td data-en="Marketing" data-ar="التسويق">Marketing</td><td>15%</td><td data-en="Global expansion" data-ar="التوسع العالمي">Global expansion</td></tr>
+            <tr><td data-en="Community" data-ar="المجتمع">Community</td><td>25%</td><td data-en="Rewards & airdrops" data-ar="المكافآت والتوزيعات">Rewards & airdrops</td></tr>
+            <tr><td data-en="Liquidity" data-ar="السيولة">Liquidity</td><td>25%</td><td data-en="Market stability" data-ar="استقرار السوق">Market stability</td></tr>
+            <tr><td data-en="Reserve" data-ar="الاحتياطي">Reserve</td><td>15%</td><td data-en="Future projects" data-ar="المشاريع المستقبلية">Future projects</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Counters -->
+    <div class="counters">
+      <div class="counter-box"><p class="counter-number" data-target="1000000000">0</p><p class="counter-label" data-en="Total Supply" data-ar="إجمالي العرض">Total Supply</p></div>
+      <div class="counter-box"><p class="counter-number" data-target="100000000">0</p><p class="counter-label" data-en="Burned Tokens" data-ar="العملات المحروقة">Burned Tokens</p></div>
+      <div class="counter-box"><p class="counter-number" data-target="25000">0</p><p class="counter-label" data-en="Holders" data-ar="عدد الحاملين">Holders</p></div>
+      <div class="counter-box"><p class="counter-number" data-target="5400">0</p><p class="counter-label" data-en="Daily Transactions" data-ar="المعاملات اليومية">Daily Transactions</p></div>
+    </div>
+
+    <!-- Why Hold -->
+    <div class="why-hold" id="whyHold">
+      <h3 data-en="💎 Why Hold Tadmor Token?" data-ar="💎 لماذا تمتلك عملة تدمر؟">💎 Why Hold Tadmor Token?</h3>
+      <p data-en="Holding Tadmor Token means being part of a strong, rewarding, and transparent decentralized ecosystem."
+         data-ar="امتلاك عملة تدمر يعني أن تكون جزءًا من نظام بيئي لامركزي قوي وشفاف ومجزي."></p>
+
+      <div class="why-grid">
+        <div class="why-item"><h4 data-en="⚡ Fast & Low Fees" data-ar="⚡ سريعة ومنخفضة الرسوم">⚡ Fast & Low Fees</h4><p data-en="Instant transactions with minimal costs." data-ar="معاملات فورية بتكاليف منخفضة."></p></div>
+        <div class="why-item"><h4 data-en="🔒 Secure Blockchain" data-ar="🔒 بلوكشين آمن">🔒 Secure Blockchain</h4><p data-en="Advanced encryption with transparent records." data-ar="تشفير متقدم وسجلات شفافة."></p></div>
+        <div class="why-item"><h4 data-en="🎁 Rewards System" data-ar="🎁 نظام مكافآت">🎁 Rewards System</h4><p data-en="Earn passive income by holding TDMR." data-ar="احصل على دخل سلبي من خلال الاحتفاظ بـ TDMR."></p></div>
+        <div class="why-item"><h4 data-en="🌱 Sustainable Model" data-ar="🌱 نموذج مستدام">🌱 Sustainable Model</h4><p data-en="Designed for long-term growth and balance." data-ar="مصممة لتحقيق نمو واستقرار طويل الأمد."></p></div>
+      </div>
+    </div>
+
+    <!-- Burn Section -->
+    <div class="burn-section" id="burnSection">
+      <h3 data-en="🔥 Burn Mechanism" data-ar="🔥 آلية الحرق">🔥 Burn Mechanism</h3>
+      <p data-en="10% of transaction fees are periodically burned to increase value and maintain scarcity."
+         data-ar="يتم حرق 10٪ من رسوم المعاملات بشكل دوري لزيادة القيمة والحفاظ على الندرة."></p>
+
+      <div class="burn-progress"><div class="burn-progress-inner"></div></div>
+      <p style="margin-top:10px; color:#f0b90b; font-weight:bold;" data-en="≈ 10% of total supply burned" data-ar="≈ تم حرق 10٪ من إجمالي العرض">≈ 10% of total supply burned <span class="flame"></span></p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <button data-en="🚀 Join the Tadmor Revolution" data-ar="🚀 انضم الآن إلى ثورة تدمر">🚀 Join the Tadmor Revolution</button>
+    </div>
+  </main>
+
+  <footer>© <span id="year"></span> Tadmor Token — All rights reserved.</footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Chart
+    new Chart(document.getElementById("tokenChart"), {
+      type: "pie",
+      data: { labels:["Development","Marketing","Community","Liquidity","Reserve"],
+        datasets:[{ data:[20,15,25,25,15], backgroundColor:["#f0b90b","#ffd700","#cfa400","#a88200","#7a6400"] }] },
+      options:{ plugins:{ legend:{ labels:{ color:"#fff" } } } }
+    });
+
+    // Counters
+    const counters = document.querySelectorAll(".counter-number");
+    const speed = 100;
+    const runCounter = (counter)=>{
+      const target=+counter.getAttribute("data-target");
+      const count=+counter.innerText;
+      const inc=target/speed;
+      if(count<target){counter.innerText=Math.ceil(count+inc);setTimeout(()=>runCounter(counter),20);}
+      else{counter.innerText=target.toLocaleString();}
+    };
+
+    // Scroll animation
+    const burn=document.getElementById("burnSection");
+    const why=document.getElementById("whyHold");
+    window.addEventListener("scroll",()=>{
+      const burnTop=burn.getBoundingClientRect().top;
+      const whyTop=why.getBoundingClientRect().top;
+      if(burnTop<window.innerHeight-100) burn.classList.add("visible");
+      if(whyTop<window.innerHeight-100){why.classList.add("visible"); counters.forEach(runCounter);}
+    });
+
+    // Language toggle
+    const langBtn=document.getElementById("langToggle");
+    const translatable=document.querySelectorAll("[data-en]");
+    let currentLang="en";
+    langBtn.addEventListener("click",()=>{
+      currentLang=currentLang==="en"?"ar":"en";
+      document.body.style.direction=currentLang==="ar"?"rtl":"ltr";
+      langBtn.textContent=currentLang==="en"?"AR":"EN";
+      translatable.forEach(el=>el.textContent=el.getAttribute(`data-${currentLang}`));
+    });
+  </script>
+</body>
+</html>

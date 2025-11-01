@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tadmor Token</title>
+  <style>
+    /* 🎨 إعدادات عامة */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", "Cairo", sans-serif;
+      background: linear-gradient(to bottom, #000, #0a0a0a, #111);
+      color: #ddd;
+      transition: direction 0.4s ease;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 🔝 الهيدر */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 70px;
+      border-bottom: 1px solid #222;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    /* 🪙 شعار صغير في الهيدر */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    .logo span {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #00d084;
+    }
+
+    /* 🔗 الروابط */
+    nav a {
+      margin-left: 25px;
+      color: #ccc;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #00d084;
+    }
+
+    /* 🌍 زر تغيير اللغة */
+    .lang-btn {
+      border: 1px solid #00d084;
+      color: #00d084;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .lang-btn:hover {
+      background: rgba(0, 208, 132, 0.1);
+    }
+
+    /* 🦸‍♂️ قسم البطل */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 140px;
+    }
+
+    .hero img {
+      width: 180px;
+      margin-bottom: 30px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(0, 208, 132, 0.4);
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      background: linear-gradient(90deg, #00d084, #00ffa5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero .buttons a {
+      display: inline-block;
+      margin: 0 10px;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: #00d084;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: #00ffa5;
+    }
+
+    .btn-outline {
+      border: 2px solid #00d084;
+      color: #00d084;
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 208, 132, 0.1);
+    }
+
+    /* 🪙 قسم عن العملة */
+    section {
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    section h3 {
+      color: #00d084;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+    }
+
+    section p {
+      color: #bbb;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* 📢 قسم الدعوة */
+    .cta {
+      background: linear-gradient(180deg, #00d08422, #000);
+      padding: 100px 20px;
+    }
+
+    .cta h3 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+
+    .cta a {
+      padding: 15px 35px;
+      background: #00d084;
+      color: #000;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .cta a:hover {
+      background: #00ffa5;
+    }
+
+    /* ⚫ الفوتر */
+    footer {
+      border-top: 1px solid #222;
+      text-align: center;
+      padding: 30px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 20px 40px;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hero h2 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🟩 الهيدر -->
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="Tadmor Logo">
+      <span>Tadmor Token</span>
+    </div>
+
+    <nav>
+  <!-- 🔗 ربط صفحة About.html الخارجية -->
+  <a href="about.html" data-en="About" data-ar="عن العملة">About</a>
+
+  <a href="#tokenomics" data-en="Tokenomics" data-ar="اقتصاد العملة">Tokenomics</a>
+  
+  <!-- 🔗 صفحة خارجيه Roadmap -->
+  <a href="roadmap.html" data-en="Roadmap" data-ar="خطة الطريق">Roadmap</a>
+
+  <a href="#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
+</nav>
+
+
+
+    <button class="lang-btn" id="langToggle">AR</button>
+  </header>
+
+  <!-- 🟩 قسم البطل -->
+  <section class="hero">
+    <img src="logo.png" alt="Tadmor Token Logo" />
+    <h2 data-en="The Future of Decentralized Finance" data-ar="مستقبل التمويل اللامركزي">
+      The Future of Decentralized Finance
+    </h2>
+    <p
+      data-en="Tadmor Token is building a secure, transparent, and community-driven digital ecosystem powered by blockchain innovation."
+      data-ar="عملة تدمر تبني نظامًا رقمياً آمناً وشفافاً يقوده المجتمع ويعتمد على تقنية البلوكتشين المبتكرة.">
+      Tadmor Token is building a secure, transparent, and community-driven digital ecosystem powered by blockchain innovation.
+    </p>
+    <div class="buttons">
+      <a href="#" class="btn-primary" data-en="Whitepaper" data-ar="الورقة البيضاء">Whitepaper</a>
+      <a href="#" class="btn-outline" data-en="Join Community" data-ar="انضم إلى المجتمع">Join Community</a>
+    </div>
+  </section>
+
+  <!-- 🟩 قسم عن العملة -->
+  <section id="about">
+    <h3 data-en="About Tadmor Token" data-ar="حول عملة تدمر">About Tadmor Token</h3>
+    <p
+      data-en="Tadmor Token aims to bridge the gap between traditional finance and decentralized systems. Built on cutting-edge blockchain technology, Tadmor empowers users with transparency, fairness, and financial freedom in a truly decentralized world."
+      data-ar="تهدف عملة تدمر إلى سد الفجوة بين التمويل التقليدي والأنظمة اللامركزية. تم تطويرها باستخدام أحدث تقنيات البلوكتشين لتمنح المستخدمين الشفافية والعدالة والحرية المالية في عالم لامركزي حقيقي.">
+      Tadmor Token aims to bridge the gap between traditional finance and decentralized systems. Built on cutting-edge blockchain technology, Tadmor empowers users with transparency, fairness, and financial freedom in a truly decentralized world.
+    </p>
+  </section>
+
+  <!-- 🟩 قسم الدعوة -->
+  <section class="cta">
+    <h3 data-en="Ready to Join the Revolution?" data-ar="هل أنت مستعد للانضمام إلى الثورة؟">Ready to Join the Revolution?</h3>
+    <a href="#" data-en="Buy Tadmor Token" data-ar="اشترِ عملة تدمر">Buy Tadmor Token</a>
+  </section>
+
+  <!-- 🟩 الفوتر -->
+  <footer>
+    © <span id="year"></span> Tadmor Token. All rights reserved.
+  </footer>
+
+  <!-- 🧠 سكربت اللغة الموحد -->
+<script src="lang.js"></script>
+</body>
+</html>
+</body>
+</html>
