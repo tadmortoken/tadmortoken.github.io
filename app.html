@@ -75,6 +75,7 @@
       gap: 8px;
       color: #e5e7eb;
       font-size: 13px;
+      text-align: center;
     }
 
     .spinner {
@@ -87,9 +88,7 @@
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
 
     /* شاشة الاشتراك (Gate) */
@@ -239,7 +238,7 @@
     }
 
     body.theme-light .hero {
-      background: linear-gradient(135deg, #fff, #e5e7eb);
+      background: linear-gradient(135deg, #ffffff, #e5e7eb);
       border-color: rgba(148,163,184,0.7);
       box-shadow: 0 14px 30px rgba(148,163,184,0.5);
     }
@@ -326,7 +325,7 @@
     }
 
     body.theme-light .card {
-      background: #fff;
+      background: #ffffff;
       border-color: rgba(209,213,219,0.9);
       box-shadow: 0 10px 24px rgba(148,163,184,0.6);
     }
@@ -467,7 +466,7 @@
         </div>
 
         <div class="gate-note">
-          يجب أن تكون مشتركاً في القناة الرسمية، ثم اضغط "دخول تلقائي" ليتم التحقّق وفتح التطبيق.
+          إذا كنت مشتركاً بالفعل، اضغط "دخول تلقائي" للتحقّق وفتح التطبيق مباشرة.
         </div>
       </div>
     </div>
@@ -540,12 +539,11 @@
   </div>
 
   <script>
-    // ========= إعدادات مهمّة =========
-    // ⚠️ التوكن و اسم القناة (عدّلهم أنت)
-    const BOT_TOKEN = "8471678735:AAGLojDTjg0YFN7ONOwEfWvnCdE0Kk7e60Y"; // <-- حط توكن البوت
-    const CHANNEL_USERNAME = "@tadmortoken"; // <-- مثلاً: @TadmorTokenChannel
-    const CHANNEL_LINK = "https://t.me/tadmortoken"; // <-- رابط القناة
-    const LAUNCH_DATE = new Date("2025-12-01T21:00:00Z"); // <-- عدّل تاريخ الإطلاق
+    // ========= إعدادات مهمّة (عدّلها أنت) =========
+    const BOT_TOKEN = "8471678735:AAGLojDTjg0YFN7ONOwEfWvnCdE0Kk7e60Y";        // ← حط توكن البوت
+    const CHANNEL_USERNAME = "@tadmortoken";  // ← مثال: @TadmorTokenChannel
+    const CHANNEL_LINK = "https://t.me/tadmortoken"; // ← رابط القناة
+    const LAUNCH_DATE = new Date("2025-12-01T21:00:00Z");      // ← غيّر تاريخ الإطلاق
 
     const tg = window.Telegram ? window.Telegram.WebApp : null;
 
@@ -554,13 +552,15 @@
     }
 
     window.addEventListener("load", () => {
-      // نخفي شاشة اللودينغ بعد شوي
+      // إخفاء شاشة اللودينغ بعد قليل
       setTimeout(() => {
         const loading = document.getElementById("loading");
         if (loading) loading.style.display = "none";
       }, 800);
 
       startCountdown();
+      // تحقق تلقائي: لو المستخدم مشترك، يفتح التطبيق مباشرة بدون إظهار شاشة الاشتراك
+      initialMembershipCheck();
     });
 
     function openChannel() {
@@ -571,8 +571,9 @@
       const loading = document.getElementById("loading");
       if (!loading) return;
       loading.style.display = "flex";
-      const box = loading.querySelector(".loading-box div:last-child");
-      if (box && msg) box.textContent = msg;
+      const textDivs = loading.getElementsByTagName("div");
+      const labelDiv = textDivs[textDivs.length - 1];
+      if (labelDiv && msg) labelDiv.textContent = msg;
     }
 
     function hideLoading() {
@@ -582,14 +583,50 @@
 
     async function autoEnter() {
       showLoading("جارِ التحقّق من الاشتراك...");
-      await checkMembership();
+      await checkMembership(true);
       hideLoading();
     }
 
-    async function checkMembership() {
+    // تحقق تلقائي أول ما يفتح التطبيق (بدون تنبيه)
+    async function initialMembershipCheck() {
       try {
         if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-          alert("لم يتم الحصول على بيانات المستخدم من تليجرام. افتح التطبيق من داخل البوت.");
+          return;
+        }
+
+        const userId = tg.initDataUnsafe.user.id;
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}&user_id=${userId}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.ok) {
+          console.log("initial getChatMember error:", data);
+          return;
+        }
+
+        const status = data.result.status;
+
+        if (["member", "administrator", "creator"].includes(status)) {
+          // مشترك ✅ → افتح التطبيق فوراً
+          const gate = document.getElementById("gate");
+          if (gate) gate.style.display = "none";
+
+          fetchMemberCount();
+          markAppEntered();
+        } else {
+          console.log("User is not member yet (initial check).");
+        }
+      } catch (e) {
+        console.error("initialMembershipCheck error:", e);
+      }
+    }
+
+    // checkMembership: يستخدم للدخول التلقائي مع رسائل للمستخدم
+    async function checkMembership(withAlerts) {
+      try {
+        if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+          if (withAlerts) alert("لم يتم الحصول على بيانات المستخدم من تليجرام. افتح التطبيق من داخل البوت.");
           return;
         }
 
@@ -601,28 +638,26 @@
 
         if (!data.ok) {
           console.log("getChatMember error:", data);
-          alert("تعذّر التحقّق من الاشتراك. تأكد من إضافة البوت كمدير في القناة.");
+          if (withAlerts) alert("تعذّر التحقّق من الاشتراك. تأكد من إضافة البوت كمدير في القناة.");
           return;
         }
 
         const status = data.result.status;
 
         if (["member", "administrator", "creator"].includes(status)) {
-          // مشترك ✅ → افتح التطبيق
           const gate = document.getElementById("gate");
           if (gate) gate.style.display = "none";
 
-          // جلب عدد الأعضاء
           fetchMemberCount();
-
-          // إرسال دخول إلى البوت لتخزينه في قاعدة البيانات
           markAppEntered();
         } else {
-          alert("لم يتم العثور عليك كعضو في القناة. تأكد من الاشتراك أولاً ثم اضغط دخول تلقائي.");
+          if (withAlerts) {
+            alert("لم يتم العثور عليك كعضو في القناة. تأكد من الاشتراك أولاً ثم اضغط دخول تلقائي.");
+          }
         }
       } catch (e) {
-        console.error(e);
-        alert("حدث خطأ أثناء التحقّق. حاول لاحقاً.");
+        console.error("checkMembership error:", e);
+        if (withAlerts) alert("حدث خطأ أثناء التحقّق. حاول لاحقاً.");
       }
     }
 
