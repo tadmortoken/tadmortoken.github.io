@@ -34,6 +34,12 @@
       display: flex;
       justify-content: center;
       align-items: stretch;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    body.theme-light {
+      background: #f3f4f6;
+      color: #020617;
     }
 
     .app {
@@ -45,6 +51,45 @@
       flex-direction: column;
       gap: 16px;
       position: relative;
+    }
+
+    /* شاشة تحميل */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 30;
+    }
+
+    .loading-box {
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 3px solid rgba(148,163,184,0.4);
+      border-top-color: #f97316;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* شاشة الاشتراك (Gate) */
@@ -149,15 +194,54 @@
       line-height: 1.5;
     }
 
+    /* زر التيم */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle {
+      font-size: 11px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.8);
+    }
+
+    .theme-toggle-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #f97316;
+    }
+
+    body.theme-light .theme-toggle {
+      background: rgba(243,244,246,0.9);
+      color: #111827;
+    }
+
     .hero {
       border-radius: 24px;
-      padding: 22px 18px 30px;
+      padding: 22px 18px 24px;
       background: linear-gradient(135deg, #020617, #020617);
       border: 1px solid rgba(148, 163, 184, 0.35);
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
       position: relative;
       overflow: hidden;
       text-align: center;
+    }
+
+    body.theme-light .hero {
+      background: linear-gradient(135deg, #fff, #e5e7eb);
+      border-color: rgba(148,163,184,0.7);
+      box-shadow: 0 14px 30px rgba(148,163,184,0.5);
     }
 
     .hero-logo {
@@ -192,7 +276,7 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .coming-soon {
@@ -204,6 +288,16 @@
     .coming-soon-sub {
       font-size: 12px;
       color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .countdown {
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .countdown strong {
+      color: var(--accent);
     }
 
     .section-title {
@@ -231,6 +325,12 @@
       gap: 6px;
     }
 
+    body.theme-light .card {
+      background: #fff;
+      border-color: rgba(209,213,219,0.9);
+      box-shadow: 0 10px 24px rgba(148,163,184,0.6);
+    }
+
     .card-label {
       font-size: 10px;
       letter-spacing: 0.16em;
@@ -252,6 +352,12 @@
       border: 1px solid rgba(55, 65, 81, 0.85);
       font-size: 10px;
       color: var(--muted);
+    }
+
+    body.theme-light .pill-soft {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+      color: #4b5563;
     }
 
     .btn-row {
@@ -290,6 +396,13 @@
       box-shadow: 0 10px 26px rgba(15, 23, 42, 1);
     }
 
+    body.theme-light .btn-ghost-link {
+      background: #f9fafb;
+      color: #111827;
+      border-color: #e5e7eb;
+      box-shadow: 0 10px 26px rgba(148,163,184,0.6);
+    }
+
     .btn-link:active {
       transform: translateY(1px) scale(0.99);
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.9);
@@ -306,6 +419,12 @@
       color: var(--accent);
     }
 
+    .member-count {
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--muted);
+    }
+
     @media (max-width: 380px) {
       .hero-title {
         font-size: 18px;
@@ -319,27 +438,45 @@
     }
   </style>
 </head>
-<body>
+<body class="theme-dark">
+  <!-- شاشة تحميل -->
+  <div id="loading" class="loading-overlay" style="display: flex;">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div>جاري تحميل Tadmor Token Mini App...</div>
+    </div>
+  </div>
+
   <div class="app">
     <!-- شاشة الاشتراك -->
     <div id="gate" class="gate-overlay">
       <div class="gate-card">
         <div class="gate-logo">TD</div>
         <div class="gate-title">Tadmor Token</div>
-        <div class="gate-sub">الرجاء الاشتراك بقناة التليجرام للدخول إلى التطبيق المصغر</div>
+        <div class="gate-sub">
+          الرجاء الاشتراك بقناة التليجرام للدخول إلى التطبيق المصغّر
+        </div>
 
         <div class="gate-buttons">
           <button class="btn btn-primary" onclick="openChannel()">
             📣 الاشتراك في القناة
           </button>
-          <button class="btn btn-secondary" onclick="checkMembership()">
-            ✅ تحقّق من الاشتراك
+          <button class="btn btn-secondary" onclick="autoEnter()">
+            🚀 دخول تلقائي
           </button>
         </div>
 
         <div class="gate-note">
-          يجب أن تكون مشتركاً في القناة الرسمية ليتم فتح تطبيق Tadmor Token.
+          يجب أن تكون مشتركاً في القناة الرسمية، ثم اضغط "دخول تلقائي" ليتم التحقّق وفتح التطبيق.
         </div>
+      </div>
+    </div>
+
+    <!-- شريط علوي للتيم -->
+    <div class="top-bar">
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <div class="theme-toggle-dot"></div>
+        <span id="theme-label">Dark</span>
       </div>
     </div>
 
@@ -351,6 +488,14 @@
 
       <div class="coming-soon">قريباً</div>
       <div class="coming-soon-sub">تجربة كاملة لعملة Tadmor Token قيد التحضير</div>
+
+      <div class="countdown" id="countdown">
+        الإطلاق بعد: <strong>—</strong>
+      </div>
+
+      <div class="member-count" id="member-count">
+        عدد أعضاء القناة: —
+      </div>
     </section>
 
     <section>
@@ -395,19 +540,50 @@
   </div>
 
   <script>
-    // 1) عرّف التوكن و قناة التليجرام
-    // ⚠️ ملاحظة: هذا يعرض التوكن في كود الصفحة (مش آمن 100٪ لمشاريع ضخمة)
-    const BOT_TOKEN = "8471678735:AAGLojDTjg0YFN7ONOwEfWvnCdE0Kk7e60Y"; // <<< حط نفس توكن البوت هنا
-    const CHANNEL_USERNAME = "@tadmortoken"; // <<< مثال: "@tadmor_channel"
+    // ========= إعدادات مهمّة =========
+    // ⚠️ التوكن و اسم القناة (عدّلهم أنت)
+    const BOT_TOKEN = "8471678735:AAGLojDTjg0YFN7ONOwEfWvnCdE0Kk7e60Y"; // <-- حط توكن البوت
+    const CHANNEL_USERNAME = "@tadmortoken"; // <-- مثلاً: @TadmorTokenChannel
+    const CHANNEL_LINK = "https://t.me/tadmortoken"; // <-- رابط القناة
+    const LAUNCH_DATE = new Date("2025-12-01T21:00:00Z"); // <-- عدّل تاريخ الإطلاق
 
     const tg = window.Telegram ? window.Telegram.WebApp : null;
+
     if (tg) {
       tg.expand(); // يفتح الويب آب بأقصى ارتفاع
     }
 
+    window.addEventListener("load", () => {
+      // نخفي شاشة اللودينغ بعد شوي
+      setTimeout(() => {
+        const loading = document.getElementById("loading");
+        if (loading) loading.style.display = "none";
+      }, 800);
+
+      startCountdown();
+    });
+
     function openChannel() {
-      // حط هنا رابط القناة الحقيقي
-      window.open("https://t.me/tadmortoken", "_blank");
+      window.open(CHANNEL_LINK, "_blank");
+    }
+
+    function showLoading(msg) {
+      const loading = document.getElementById("loading");
+      if (!loading) return;
+      loading.style.display = "flex";
+      const box = loading.querySelector(".loading-box div:last-child");
+      if (box && msg) box.textContent = msg;
+    }
+
+    function hideLoading() {
+      const loading = document.getElementById("loading");
+      if (loading) loading.style.display = "none";
+    }
+
+    async function autoEnter() {
+      showLoading("جارِ التحقّق من الاشتراك...");
+      await checkMembership();
+      hideLoading();
     }
 
     async function checkMembership() {
@@ -418,15 +594,14 @@
         }
 
         const userId = tg.initDataUnsafe.user.id;
-        // استعلام على API تبع البوت
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}&user_id=${userId}`;
 
         const res = await fetch(url);
         const data = await res.json();
 
         if (!data.ok) {
-          console.log(data);
-          alert("تعذر التحقق من الاشتراك. حاول مرة أخرى.");
+          console.log("getChatMember error:", data);
+          alert("تعذّر التحقّق من الاشتراك. تأكد من إضافة البوت كمدير في القناة.");
           return;
         }
 
@@ -435,13 +610,98 @@
         if (["member", "administrator", "creator"].includes(status)) {
           // مشترك ✅ → افتح التطبيق
           const gate = document.getElementById("gate");
-          gate.style.display = "none";
+          if (gate) gate.style.display = "none";
+
+          // جلب عدد الأعضاء
+          fetchMemberCount();
+
+          // إرسال دخول إلى البوت لتخزينه في قاعدة البيانات
+          markAppEntered();
         } else {
-          alert("لم يتم العثور عليك كعضو في القناة. تأكد من الاشتراك أولاً.");
+          alert("لم يتم العثور عليك كعضو في القناة. تأكد من الاشتراك أولاً ثم اضغط دخول تلقائي.");
         }
       } catch (e) {
         console.error(e);
-        alert("حدث خطأ أثناء التحقق. حاول لاحقاً.");
+        alert("حدث خطأ أثناء التحقّق. حاول لاحقاً.");
+      }
+    }
+
+    async function fetchMemberCount() {
+      try {
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMemberCount?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const el = document.getElementById("member-count");
+        if (!el) return;
+
+        if (data.ok) {
+          el.textContent = "عدد أعضاء القناة: " + data.result;
+        } else {
+          el.textContent = "عدد أعضاء القناة: —";
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function startCountdown() {
+      const el = document.getElementById("countdown");
+      if (!el) return;
+
+      function update() {
+        const now = new Date();
+        const diff = LAUNCH_DATE - now;
+
+        if (diff <= 0) {
+          el.innerHTML = 'الإطلاق بعد: <strong>تم الإطلاق</strong>';
+          return;
+        }
+
+        const sec = Math.floor(diff / 1000);
+        const days = Math.floor(sec / (3600 * 24));
+        const hours = Math.floor((sec % (3600 * 24)) / 3600);
+        const minutes = Math.floor((sec % 3600) / 60);
+        const seconds = sec % 60;
+
+        el.innerHTML =
+          'الإطلاق بعد: <strong>' +
+          days + " يوم " +
+          hours.toString().padStart(2, "0") + ":" +
+          minutes.toString().padStart(2, "0") + ":" +
+          seconds.toString().padStart(2, "0") +
+          "</strong>";
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const label = document.getElementById("theme-label");
+      const isDark = body.classList.contains("theme-dark");
+      if (isDark) {
+        body.classList.remove("theme-dark");
+        body.classList.add("theme-light");
+        if (label) label.textContent = "Light";
+      } else {
+        body.classList.remove("theme-light");
+        body.classList.add("theme-dark");
+        if (label) label.textContent = "Dark";
+      }
+    }
+
+    function markAppEntered() {
+      try {
+        if (tg) {
+          const payload = {
+            event: "entered_app",
+            ts: Date.now()
+          };
+          tg.sendData(JSON.stringify(payload));
+        }
+      } catch (e) {
+        console.error("sendData error:", e);
       }
     }
   </script>
