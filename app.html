@@ -6,20 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    :root {
-      --bg: #050712;
-      --bg-soft: #0e1220;
-      --accent: #f5c85b;
-      --accent-soft: rgba(245, 200, 91, 0.1);
-      --text-main: #ffffff;
-      --text-muted: #9ca3af;
-      --border-soft: #1f2933;
-      --nav-bg: #050712;
-      --nav-active: #f5c85b;
-      --nav-muted: #6b7280;
-      --card-radius: 18px;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -28,41 +14,39 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
-      color: var(--text-main);
+      background-color: #020617;
+      color: #f9fafb;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: stretch;
     }
 
-    .app-shell {
+    .app {
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
+      background-color: #020617;
       display: flex;
       flex-direction: column;
-      background: rgba(3, 7, 18, 0.96);
-      backdrop-filter: blur(18px);
-      border-left: 1px solid rgba(148, 163, 184, 0.1);
-      border-right: 1px solid rgba(148, 163, 184, 0.1);
+      position: relative;
     }
 
-    /* شريط علوي للصفحة الرئيسية */
+    /* الشريط العلوي */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-soft);
+      padding: 10px 14px;
+      border-bottom: 1px solid #111827;
+      background-color: #020617;
     }
 
     .user-id {
       font-size: 12px;
-      color: var(--text-muted);
+      color: #9ca3af;
     }
 
-    .logo-area {
+    .logo-box {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -71,102 +55,103 @@
     .logo-circle {
       width: 28px;
       height: 28px;
-      border-radius: 999px;
+      border-radius: 50%;
       background: radial-gradient(circle at 30% 20%, #fde68a, #b45309);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       font-size: 14px;
-      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.18),
-                  0 10px 18px rgba(15, 23, 42, 0.85);
+      color: #111827;
     }
 
-    .logo-text-main {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .logo-text-sub {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .logo-text-wrap {
+    .logo-texts {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
     }
 
-    /* محتوى الصفحة */
-    .page-content {
+    .logo-main {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    /* محتوى الصفحات */
+    .page {
       flex: 1;
-      padding: 12px 14px 82px; /* مساحة للـ nav تحت */
+      padding: 12px 14px 70px; /* مساحة للـ nav */
       overflow-y: auto;
     }
 
-    /* قسم "قريباً" + العد التنازلي */
+    .hidden {
+      display: none;
+    }
+
+    /* الرئيسية */
     .coming-card {
-      background: rgba(15, 23, 42, 0.88);
-      border-radius: var(--card-radius);
-      padding: 16px 14px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 14px 45px rgba(15, 23, 42, 0.95);
-      margin-bottom: 14px;
+      background-color: #020617;
+      border-radius: 16px;
+      border: 1px solid #111827;
+      padding: 14px 12px;
+      margin-bottom: 16px;
     }
 
     .coming-title {
       font-size: 18px;
       font-weight: 700;
+      color: #facc15;
       margin-bottom: 6px;
-      color: var(--accent);
     }
 
-    /* تكبير 200% عن حجم النص العادي تقريباً */
+    /* تكبير العد 200% تقريباً */
     .coming-countdown {
       font-size: 26px;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .coming-subtext {
+    .coming-sub {
       font-size: 12px;
-      color: var(--text-muted);
+      color: #9ca3af;
     }
 
-    /* مكان الفيديو */
     .video-block {
-      margin-top: 18px;
-      background: var(--accent-soft);
-      border-radius: 16px;
-      border: 1px dashed rgba(245, 200, 91, 0.4);
-      padding: 10px;
+      margin-top: 16px;
+      border-radius: 14px;
+      border: 1px dashed rgba(250, 204, 21, 0.6);
+      padding: 8px;
+      background-color: #030712;
     }
 
     .video-label {
-      font-size: 12px;
-      color: var(--accent);
-      margin-bottom: 6px;
+      font-size: 11px;
+      color: #facc15;
+      margin-bottom: 4px;
     }
 
-    .video-frame-placeholder {
+    .video-placeholder {
       position: relative;
       width: 100%;
       padding-top: 56.25%; /* 16:9 */
-      background: radial-gradient(circle at top, #111827, #020617);
-      border-radius: 12px;
-      overflow: hidden;
+      background: #020617;
+      border-radius: 10px;
+      border: 1px solid #111827;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-muted);
+      color: #6b7280;
       font-size: 12px;
       text-align: center;
     }
 
-    .video-frame-placeholder span {
+    .video-placeholder span {
       position: absolute;
       inset: 0;
       display: flex;
@@ -175,38 +160,58 @@
       padding: 0 8px;
     }
 
-    /* باقي المحتوى أسفل الصفحة */
-    .bottom-section {
+    .bottom-text {
       margin-top: 20px;
-      padding: 10px 10px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: radial-gradient(circle at top right, rgba(248, 250, 252, 0.07), rgba(15, 23, 42, 0.92));
       font-size: 12px;
-      color: var(--text-muted);
+      color: #9ca3af;
+      border-radius: 12px;
+      border: 1px solid #111827;
+      padding: 10px;
     }
 
-    .bottom-section h3 {
+    .bottom-text h3 {
       font-size: 13px;
-      color: var(--text-main);
+      color: #e5e7eb;
       margin-bottom: 6px;
     }
 
-    /* الـ Tabs السفلية */
+    /* صفحات ثانية (أصدقاء / محفظة / أداء) */
+    .placeholder {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .placeholder h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      margin-top: 10px;
+      font-size: 11px;
+      background-color: #030712;
+    }
+
+    /* شريط التنقل السفلي */
     .bottom-nav {
       position: fixed;
-      inset-inline: 50%;
+      left: 50%;
       transform: translateX(-50%);
       bottom: 0;
       width: 100%;
       max-width: 480px;
-      padding: 6px 8px 8px;
-      background: linear-gradient(to top, rgba(3, 7, 18, 0.98), rgba(3, 7, 18, 0.9));
-      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      background-color: #020617;
+      border-top: 1px solid #111827;
       display: flex;
-      justify-content: space-between;
+      padding: 6px 8px;
       gap: 6px;
-      z-index: 40;
     }
 
     .nav-item {
@@ -221,12 +226,11 @@
       font-size: 10px;
       cursor: pointer;
       user-select: none;
-      transition: background 0.18s ease, color 0.18s ease, transform 0.08s ease;
+      color: #6b7280;
     }
 
     .nav-item span.icon {
-      font-size: 17px;
-      line-height: 1;
+      font-size: 18px;
     }
 
     .nav-item span.label {
@@ -234,211 +238,151 @@
     }
 
     .nav-item.active {
-      background: radial-gradient(circle at top, rgba(245, 200, 91, 0.14), rgba(15, 23, 42, 0.8));
-      color: var(--nav-active);
-      transform: translateY(-1px);
-    }
-
-    .nav-item.inactive {
-      color: var(--nav-muted);
-    }
-
-    /* صفحات أخرى (أصدقاء / محفظة / أداء) */
-    .hidden {
-      display: none !important;
-    }
-
-    .placeholder-page {
-      padding: 20px 14px 90px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .placeholder-page h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: var(--text-main);
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      padding: 4px 10px;
-      font-size: 11px;
-      margin-top: 10px;
-      background: rgba(15, 23, 42, 0.7);
-    }
-
-    @media (max-width: 380px) {
-      .coming-countdown {
-        font-size: 22px;
-      }
+      background-color: #030712;
+      color: #facc15;
     }
   </style>
 </head>
-
 <body>
-  <div class="app-shell">
+  <div class="app">
+    <!-- الشريط العلوي -->
+    <div class="top-bar">
+      <div class="user-id" id="user-id-display">ID: ——</div>
 
-    <!-- صفحة الرئيسية -->
-    <div id="page-home">
-      <div class="top-bar">
-        <div class="user-id" id="user-id-display">
-          ID: ——
+      <div class="logo-box">
+        <div class="logo-texts">
+          <div class="logo-main">Tadmor Token</div>
+          <div class="logo-sub">Palmyra • Web3 • Community</div>
         </div>
-
-        <div class="logo-area">
-          <div class="logo-text-wrap">
-            <div class="logo-text-main">TADMOR TOKEN</div>
-            <div class="logo-text-sub">Palmyra • Web3 • Community</div>
-          </div>
-          <div class="logo-circle">TD</div>
-        </div>
-      </div>
-
-      <div class="page-content">
-        <div class="coming-card">
-          <div class="coming-title">قريباً</div>
-          <div class="coming-countdown" id="countdown">
-            الإطلاق بعد: — يوم — ساعة — دقيقة — ثانية
-          </div>
-          <div class="coming-subtext">
-            تجربة كاملة لعملة Tadmor Token قيد التحضير داخل بوت تيليجرام وتطبيق مصغّر.
-          </div>
-
-          <div class="video-block">
-            <div class="video-label">فيديو الإطلاق</div>
-            <!--
-              هنا تقدر تستبدل الـ div أدناه بـ iframe من يوتيوب مثلاً:
-              <iframe src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen></iframe>
-            -->
-            <div class="video-frame-placeholder">
-              <span>هنا سيتم عرض فيديو تعريفي أو فيديو إطلاق Tadmor Token داخل التطبيق المصغّر.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- أسفل الصفحة: مساحة لأي محتوى إضافي تحب تضيفه -->
-        <div class="bottom-section">
-          <h3>نظرة سريعة</h3>
-          <p>
-            هذه الصفحة الرئيسية لتدمر توكن داخل الـ Mini App.  
-            من هنا تقدر تربط:
-          </p>
-          <ul style="margin-top:6px; padding-right:18px; list-style: disc;">
-            <li>روابط الموقع الرسمي أو الـ Whitepaper.</li>
-            <li>آخر تحديثات الإطلاق أو الحملات.</li>
-            <li>مختصر عن المراحل القادمة أو الـ Token Utilities.</li>
-          </ul>
-        </div>
+        <div class="logo-circle">TD</div>
       </div>
     </div>
 
-    <!-- صفحة الأصدقاء -->
-    <div id="page-friends" class="hidden">
-      <div class="placeholder-page">
+    <!-- الرئيسية -->
+    <div class="page" id="page-home">
+      <div class="coming-card">
+        <div class="coming-title">قريباً</div>
+        <div class="coming-countdown" id="countdown">
+          الإطلاق بعد: — يوم — ساعة — دقيقة — ثانية
+        </div>
+        <div class="coming-sub">
+          تجربة Tadmor Token داخل البوت والتطبيق المصغر قيد التحضير حالياً.
+        </div>
+
+        <div class="video-block">
+          <div class="video-label">فيديو الإطلاق</div>
+          <!-- استبدل هذا الـ div بـ iframe من يوتيوب إذا حاب -->
+          <!-- مثال:
+          <iframe width="100%" height="200" src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen></iframe>
+          -->
+          <div class="video-placeholder">
+            <span>هنا تقدر تضيف فيديو تعريفي لتدمر توكن (YouTube / Vimeo ...).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-text">
+        <h3>الصفحة الرئيسية</h3>
+        <p>
+          هنا تقدر تضيف في الأسفل روابط، وصف مختصر للمشروع، أو أي عنصر إضافي 
+          تحب يكون في آخر الصفحة مثل زر دخول للموقع أو Whitepaper.
+        </p>
+      </div>
+    </div>
+
+    <!-- الأصدقاء -->
+    <div class="page hidden" id="page-friends">
+      <div class="placeholder">
         <h2>الأصدقاء</h2>
         <p>
-          هنا تقدر لاحقاً تضيف:
-          نظام دعوات، كود إحالة، ترتيب الأصدقاء حسب عدد النقاط، أو أي نظام مكافآت خاص بالمجتمع.
+          مساحة مستقبلية لنظام الدعوات، الأكواد الخاصة، وترتيب الأصدقاء حسب النقاط أو التفاعل.
         </p>
-        <div class="pill">
-          👥
-          <span>نظام الدعوات قيد التصميم</span>
-        </div>
+        <div class="pill">👥 <span>نظام الأصدقاء قيد التطوير</span></div>
       </div>
     </div>
 
-    <!-- صفحة المحفظة -->
-    <div id="page-wallet" class="hidden">
-      <div class="placeholder-page">
+    <!-- المحفظة -->
+    <div class="page hidden" id="page-wallet">
+      <div class="placeholder">
         <h2>المحفظة</h2>
         <p>
-          شاشة مختصرة تعرض رصيد Tadmor Token، مع روابط لربط محافظ (مثلاً Ton / EVM) 
-          أو فقط عرض الرصيد والنقاط داخل البوت.
+          هنا تقدر تعرض رصيد Tadmor Token أو نقاط المستخدم داخل البوت،
+          وربط محافظ خارجية لاحقاً إذا حاب.
         </p>
-        <div class="pill">
-          👛
-          <span>محفظة مصغّرة داخل البوت</span>
-        </div>
+        <div class="pill">👛 <span>محفظة مصغّرة للمجتمع</span></div>
       </div>
     </div>
 
-    <!-- صفحة الأداء -->
-    <div id="page-performance" class="hidden">
-      <div class="placeholder-page">
+    <!-- الأداء -->
+    <div class="page hidden" id="page-performance">
+      <div class="placeholder">
         <h2>الأداء</h2>
         <p>
-          تقدر تحط هنا:
-          رسم بياني، إحصائيات المجتمع، عدد الأعضاء، أو أداء العملة (لو تم إدراجها).
+          قسم مخصص لعرض إحصائيات المجتمع، عدد الأعضاء، أو أداء العملة بعد الإدراج.
         </p>
-        <div class="pill">
-          📈
-          <span>لوحة تحكم قادمة</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- شريط التنقّل السفلي -->
-    <div class="bottom-nav">
-      <div class="nav-item active" data-target="home">
-        <span class="icon">🏠</span>
-        <span class="label">الرئيسية</span>
-      </div>
-      <div class="nav-item inactive" data-target="friends">
-        <span class="icon">👥</span>
-        <span class="label">الأصدقاء</span>
-      </div>
-      <div class="nav-item inactive" data-target="wallet">
-        <span class="icon">👛</span>
-        <span class="label">المحفظة</span>
-      </div>
-      <div class="nav-item inactive" data-target="performance">
-        <span class="icon">📈</span>
-        <span class="label">الأداء</span>
+        <div class="pill">📈 <span>لوحة أداء قادمة</span></div>
       </div>
     </div>
   </div>
 
+  <!-- شريط التنقل السفلي -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-target="home">
+      <span class="icon">🏠</span>
+      <span class="label">الرئيسية</span>
+    </div>
+    <div class="nav-item" data-target="friends">
+      <span class="icon">👥</span>
+      <span class="label">الأصدقاء</span>
+    </div>
+    <div class="nav-item" data-target="wallet">
+      <span class="icon">👛</span>
+      <span class="label">المحفظة</span>
+    </div>
+    <div class="nav-item" data-target="performance">
+      <span class="icon">📈</span>
+      <span class="label">الأداء</span>
+    </div>
+  </div>
+
   <script>
-    // --- قراءة ID المستخدم من Telegram WebApp إن كان متاحاً ---
+    // قراءة ID المستخدم من Telegram WebApp إن وجد
     (function () {
+      var span = document.getElementById("user-id-display");
       try {
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        const span = document.getElementById("user-id-display");
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
-          span.textContent = "ID: " + tg.initDataUnsafe.user.id;
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+          var uid = window.Telegram.WebApp.initDataUnsafe.user.id;
+          span.textContent = "ID: " + uid;
         } else {
           span.textContent = "ID: Guest";
         }
       } catch (e) {
-        console.warn("Telegram WebApp not found, using Guest ID");
+        span.textContent = "ID: Guest";
       }
     })();
 
-    // --- عد تنازلي بسيط (عدّل التاريخ كما تريد) ---
+    // عدّ تنازلي بسيط (غيّر التاريخ حسب ما تريد)
     (function () {
-      // غيّر هذا التاريخ لتاريخ الإطلاق الفعلي
-      const LAUNCH_DATE = new Date("2026-01-01T00:00:00Z");
-      const el = document.getElementById("countdown");
+      var countdownEl = document.getElementById("countdown");
+      // حدد تاريخ الإطلاق هنا
+      var launchDate = new Date("2026-01-01T00:00:00Z");
 
       function updateCountdown() {
-        const now = new Date();
-        let diff = LAUNCH_DATE - now;
+        var now = new Date();
+        var diff = launchDate - now;
+
         if (diff <= 0) {
-          el.textContent = "تم الإطلاق! 🎉";
+          countdownEl.textContent = "تم الإطلاق! 🎉";
           return;
         }
-        const sec = Math.floor(diff / 1000);
-        const days = Math.floor(sec / 86400);
-        const hours = Math.floor((sec % 86400) / 3600);
-        const minutes = Math.floor((sec % 3600) / 60);
-        const seconds = sec % 60;
 
-        el.textContent =
+        var totalSeconds = Math.floor(diff / 1000);
+        var days = Math.floor(totalSeconds / 86400);
+        var hours = Math.floor((totalSeconds % 86400) / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        var seconds = totalSeconds % 60;
+
+        countdownEl.textContent =
           "الإطلاق بعد: " +
           days + " يوم " +
           hours + " ساعة " +
@@ -450,37 +394,39 @@
       setInterval(updateCountdown, 1000);
     })();
 
-    // --- التنقّل بين الصفحات (Bottom Nav) ---
+    // التنقل بين الصفحات
     (function () {
-      const pages = {
+      var pages = {
         home: document.getElementById("page-home"),
         friends: document.getElementById("page-friends"),
         wallet: document.getElementById("page-wallet"),
-        performance: document.getElementById("page-performance"),
+        performance: document.getElementById("page-performance")
       };
 
-      const navItems = document.querySelectorAll(".nav-item");
+      var navItems = document.querySelectorAll(".nav-item");
 
-      navItems.forEach((item) => {
-        item.addEventListener("click", () => {
-          const target = item.getAttribute("data-target");
-
-          // إظهار الصفحة المطلوبة وإخفاء الباقي
-          Object.keys(pages).forEach((key) => {
-            if (key === target) {
-              pages[key].classList.remove("hidden");
+      function showPage(key) {
+        for (var p in pages) {
+          if (pages.hasOwnProperty(p)) {
+            if (p === key) {
+              pages[p].classList.remove("hidden");
             } else {
-              pages[key].classList.add("hidden");
+              pages[p].classList.add("hidden");
             }
-          });
+          }
+        }
+      }
 
-          // تحديث حالة الأزرار
-          navItems.forEach((el) => {
+      navItems.forEach(function (item) {
+        item.addEventListener("click", function () {
+          var target = item.getAttribute("data-target");
+
+          showPage(target);
+
+          navItems.forEach(function (el) {
             el.classList.remove("active");
-            el.classList.add("inactive");
           });
           item.classList.add("active");
-          item.classList.remove("inactive");
         });
       });
     })();
