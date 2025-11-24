@@ -94,7 +94,8 @@
       display: none;
     }
 
-    /* الرئيسية */
+    /* ================== الرئيسية ================== */
+
     .coming-card {
       background-color: #020617;
       border-radius: 16px;
@@ -187,7 +188,191 @@
       margin-bottom: 6px;
     }
 
-    /* صفحات ثانية (أصدقاء / محفظة / أداء) */
+    /* ================== صفحة الأصدقاء (Friends) ================== */
+
+    .friends-page {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* الهيدر العلوي: أيقونة + عدد + عنوان */
+    .friends-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 8px 4px 4px;
+    }
+
+    .friends-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background-color: #030712;
+      border: 1px solid #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .friends-count {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .friends-count-number {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .friends-count-label {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .friends-title {
+      margin-right: auto;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+    }
+
+    /* بطاقة الدعوة */
+    .invite-card {
+      background-color: #020617;
+      border-radius: 14px;
+      border: 1px solid #111827;
+      padding: 12px 12px 10px;
+    }
+
+    .invite-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .invite-card-sub {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    /* مربعات البونص */
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .bonus-box {
+      border-radius: 10px;
+      border: 1px solid #111827;
+      background-color: #030712;
+      padding: 8px 8px 6px;
+      font-size: 11px;
+    }
+
+    .bonus-label {
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .bonus-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #facc15;
+    }
+
+    /* حقل رابط الدعوة */
+    .invite-link-block {
+      margin-top: 4px;
+    }
+
+    .invite-link-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .invite-link-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .invite-link-input {
+      flex: 1;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 11px;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    .invite-link-input::placeholder {
+      color: #4b5563;
+    }
+
+    .invite-copy-btn {
+      white-space: nowrap;
+      border-radius: 999px;
+      border: 1px solid #facc15;
+      background-color: #facc15;
+      color: #111827;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    /* أزرار المشاركة */
+    .share-block {
+      margin-top: 10px;
+    }
+
+    .share-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .share-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .share-btn {
+      flex: 1;
+      min-width: 90px;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background-color: #030712;
+      color: #e5e7eb;
+      font-size: 11px;
+      padding: 7px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .share-btn span.icon {
+      font-size: 13px;
+    }
+
+    /* ================== صفحات ثانية (محفظة / أداء) ================== */
+
     .placeholder {
       font-size: 13px;
       color: #9ca3af;
@@ -211,7 +396,8 @@
       background-color: #030712;
     }
 
-    /* شريط التنقل السفلي */
+    /* ================== شريط التنقل السفلي ================== */
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -326,12 +512,71 @@
 
     <!-- الأصدقاء -->
     <div class="page hidden" id="page-friends">
-      <div class="placeholder">
-        <h2>الأصدقاء</h2>
-        <p>
-          مساحة مستقبلية لنظام الدعوات، الأكواد الخاصة، وترتيب الأصدقاء حسب النقاط أو التفاعل.
-        </p>
-        <div class="pill">👥 <span>نظام الأصدقاء قيد التطوير</span></div>
+      <div class="friends-page">
+        <!-- الهيدر -->
+        <div class="friends-header">
+          <div class="friends-icon">👥</div>
+
+          <div class="friends-count">
+            <div class="friends-count-number" id="friends-count-value">0</div>
+            <div class="friends-count-label">عدد الأصدقاء الذين دعوتهم</div>
+          </div>
+
+          <div class="friends-title">Friends</div>
+        </div>
+
+        <!-- كرت دعوة الأصدقاء -->
+        <div class="invite-card">
+          <div class="invite-card-title">دعوة الأصدقاء</div>
+          <div class="invite-card-sub">
+            اكسب بونص لكل صديق يسجّل عن طريق رابطك الخاص، واجمع مكافآت Tadmor Token.
+          </div>
+
+          <div class="bonus-grid">
+            <div class="bonus-box">
+              <div class="bonus-label">بونص للصديق الواحد</div>
+              <div class="bonus-value" id="bonus-per-friend">10</div>
+            </div>
+            <div class="bonus-box">
+              <div class="bonus-label">مجموع البونص</div>
+              <div class="bonus-value" id="bonus-total">0</div>
+            </div>
+          </div>
+
+          <!-- رابط الدعوة -->
+          <div class="invite-link-block">
+            <div class="invite-link-label">رابط الدعوة الخاص بك</div>
+            <div class="invite-link-row">
+              <input
+                id="invite-link-input"
+                class="invite-link-input"
+                type="text"
+                readonly
+                placeholder="سيتم توليد رابط الدعوة هنا..."
+              />
+              <button class="invite-copy-btn" id="copy-invite-btn">نسخ الرابط</button>
+            </div>
+          </div>
+
+          <!-- أزرار المشاركة -->
+          <div class="share-block">
+            <div class="share-label">مشاركة رابط الدعوة</div>
+            <div class="share-row">
+              <button class="share-btn" id="share-wa">
+                <span class="icon">🟢</span><span>واتساب</span>
+              </button>
+              <button class="share-btn" id="share-tg">
+                <span class="icon">📨</span><span>تيليجرام</span>
+              </button>
+              <button class="share-btn" id="share-tw">
+                <span class="icon">🐦</span><span>تويتر</span>
+              </button>
+              <button class="share-btn" id="share-ig">
+                <span class="icon">📸</span><span>انستغرام</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -380,28 +625,33 @@
   </div>
 
   <script>
-    // --- قراءة ID المستخدم من Telegram WebApp + fallback من الرابط ---
+    // نخلي Tadmor ID متوفر لكل السكربتات
+    var tadmorId = null;
+
+    // --- قراءة Tadmor ID / ID من الرابط و Telegram WebApp ---
     (function () {
       var span = document.getElementById("user-id-display");
       var idText = "ID: Guest";
 
       try {
-        // 1) محاولة قراءة من Telegram WebApp
+        // 1) Telegram WebApp (احتياط لو حاب تستخدمه)
         if (window.Telegram && window.Telegram.WebApp) {
           var tg = window.Telegram.WebApp;
-          tg.ready(); // إعلام تيليجرام أن الصفحة جاهزة
+          tg.ready();
 
           if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
             idText = "ID: " + tg.initDataUnsafe.user.id;
           }
         }
 
-        // 2) Fallback: لو حاب تمرر user_id أو id في رابط الصفحة
+        // 2) الأفضل: Tadmor ID القادم من الرابط
         var params = new URLSearchParams(window.location.search);
         if (params.get("user_id")) {
-          idText = "ID: " + params.get("user_id");
+          tadmorId = params.get("user_id");
+          idText = "Tadmor ID: " + tadmorId;
         } else if (params.get("id")) {
-          idText = "ID: " + params.get("id");
+          tadmorId = params.get("id");
+          idText = "Tadmor ID: " + tadmorId;
         }
       } catch (e) {
         console.warn("Telegram WebApp or params not available:", e);
@@ -441,6 +691,115 @@
 
       updateCountdown();
       setInterval(updateCountdown, 1000);
+    })();
+
+    // ----- منطق صفحة الأصدقاء (Friends) -----
+    (function () {
+      // عدّل هذا ليوزر البوت تبعك بدون @
+      var BOT_USERNAME = "Tadmor_TkBot"; // <-- غيّر الاسم هنا
+
+      var inviteLinkInput = document.getElementById("invite-link-input");
+      var copyBtn = document.getElementById("copy-invite-btn");
+
+      var friendsCountEl = document.getElementById("friends-count-value");
+      var bonusPerFriendEl = document.getElementById("bonus-per-friend");
+      var bonusTotalEl = document.getElementById("bonus-total");
+
+      // عدد الأصدقاء المدعوّين (مؤقتاً من بارامتر في الرابط ref_count)
+      // لما تركّب API حقيقي، نجيب الرقم من السيرفر بدل الرابط
+      var params = new URLSearchParams(window.location.search);
+      var refCount = parseInt(params.get("ref_count") || "0", 10);
+      if (isNaN(refCount) || refCount < 0) {
+        refCount = 0;
+      }
+
+      friendsCountEl.textContent = refCount.toString();
+
+      // بونص لكل صديق - تقدر تعدله من العنصر نفسه
+      var bonusPerFriend = parseInt(bonusPerFriendEl.textContent || "10", 10);
+      var bonusTotal = bonusPerFriend * refCount;
+      bonusTotalEl.textContent = bonusTotal.toString();
+
+      // توليد رابط الدعوة
+      var inviteLink = "";
+      if (tadmorId) {
+        // مثال: https://t.me/BOT_USERNAME?start=ref_TADMORID
+        inviteLink = "https://t.me/" + BOT_USERNAME + "?start=ref_" + encodeURIComponent(tadmorId);
+      } else {
+        // لو ما توفر Tadmor ID نستخدم رابط عام للبوت
+        inviteLink = "https://t.me/" + BOT_USERNAME;
+      }
+
+      inviteLinkInput.value = inviteLink;
+
+      // نسخ الرابط
+      if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+          if (!inviteLink) return;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(inviteLink).then(function () {
+              copyBtn.textContent = "تم النسخ ✔";
+              setTimeout(function () {
+                copyBtn.textContent = "نسخ الرابط";
+              }, 1200);
+            }).catch(function () {
+              alert("انسخ الرابط يدويًا:\n" + inviteLink);
+            });
+          } else {
+            // متصفح قديم
+            alert("انسخ الرابط يدويًا:\n" + inviteLink);
+          }
+        });
+      }
+
+      // أزرار المشاركة
+      function openShare(url) {
+        window.open(url, "_blank");
+      }
+
+      var shareText = encodeURIComponent("انضم لتدمر توكن عبر رابط الدعوة الخاص بي 🔗");
+      var encodedLink = encodeURIComponent(inviteLink);
+
+      var btnWa = document.getElementById("share-wa");
+      var btnTg = document.getElementById("share-tg");
+      var btnTw = document.getElementById("share-tw");
+      var btnIg = document.getElementById("share-ig");
+
+      if (btnWa) {
+        btnWa.addEventListener("click", function () {
+          var url = "https://wa.me/?text=" + shareText + "%20" + encodedLink;
+          openShare(url);
+        });
+      }
+
+      if (btnTg) {
+        btnTg.addEventListener("click", function () {
+          var url = "https://t.me/share/url?url=" + encodedLink + "&text=" + shareText;
+          openShare(url);
+        });
+      }
+
+      if (btnTw) {
+        btnTw.addEventListener("click", function () {
+          var url = "https://twitter.com/intent/tweet?url=" + encodedLink + "&text=" + shareText;
+          openShare(url);
+        });
+      }
+
+      if (btnIg) {
+        btnIg.addEventListener("click", function () {
+          // انستغرام ما يدعم رابط مشاركة ويب رسمي، فنكتفي بالنسخ
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(inviteLink).then(function () {
+              alert("تم نسخ رابط الدعوة.\nافتح انستغرام والصقه في الرسالة أو البايو.");
+            }).catch(function () {
+              alert("انسخ الرابط يدويًا:\n" + inviteLink);
+            });
+          } else {
+            alert("انسخ الرابط يدويًا:\n" + inviteLink);
+          }
+        });
+      }
     })();
 
     // التنقل بين الصفحات
