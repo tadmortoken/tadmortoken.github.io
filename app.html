@@ -3,742 +3,487 @@
 <head>
   <meta charset="UTF-8" />
   <title>Tadmor Token • Mini App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Telegram WebApp JS -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root {
-      --bg: #020617;
-      --card: #020617;
-      --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.18);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --border: #1f2937;
+      --bg: #050712;
+      --bg-soft: #0e1220;
+      --accent: #f5c85b;
+      --accent-soft: rgba(245, 200, 91, 0.1);
+      --text-main: #ffffff;
+      --text-muted: #9ca3af;
+      --border-soft: #1f2933;
+      --nav-bg: #050712;
+      --nav-active: #f5c85b;
+      --nav-muted: #6b7280;
+      --card-radius: 18px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%);
-      color: var(--text);
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    body.theme-light {
-      background: #f3f4f6;
-      color: #020617;
-    }
-
-    .app {
+    .app-shell {
       width: 100%;
       max-width: 480px;
-      padding: 16px;
-      margin: 0 auto;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      position: relative;
+      background: rgba(3, 7, 18, 0.96);
+      backdrop-filter: blur(18px);
+      border-left: 1px solid rgba(148, 163, 184, 0.1);
+      border-right: 1px solid rgba(148, 163, 184, 0.1);
     }
 
-    /* شاشة تحميل */
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 30;
-    }
-
-    .loading-box {
-      padding: 18px 22px;
-      border-radius: 18px;
-      background: #020617;
-      border: 1px solid rgba(148,163,184,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: #e5e7eb;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 3px solid rgba(148,163,184,0.4);
-      border-top-color: #f97316;
-      animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* شاشة الاشتراك (Gate) */
-    .gate-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, #020617 0, #000 65%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 20;
-    }
-
-    .gate-card {
-      width: 100%;
-      max-width: 420px;
-      border-radius: 24px;
-      padding: 20px 18px 18px;
-      background: rgba(15,23,42,0.98);
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.9);
-      text-align: center;
-    }
-
-    .gate-logo {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 12px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #fed7aa, #f97316);
-      border: 2px solid rgba(248,250,252,0.35);
-      box-shadow:
-        0 0 0 6px rgba(248,250,252,0.05),
-        0 18px 35px rgba(0,0,0,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #111827;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .gate-title {
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-
-    .gate-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .gate-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 11px 12px;
-      border: none;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #111827;
-      box-shadow: 0 14px 30px rgba(249, 115, 22, 0.55);
-      width: 100%;
-    }
-
-    .btn-secondary {
-      background: rgba(15,23,42,0.95);
-      color: var(--text);
-      border: 1px solid rgba(55,65,81,0.9);
-      width: 100%;
-    }
-
-    .btn:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    }
-
-    .gate-note {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 10px;
-      line-height: 1.5;
-    }
-
-    /* زر التيم */
+    /* شريط علوي للصفحة الرئيسية */
     .top-bar {
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .user-id {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .logo-area {
+      display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .theme-toggle {
-      font-size: 11px;
-      color: var(--muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      padding: 4px 8px;
+    .logo-circle {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: rgba(15,23,42,0.8);
-    }
-
-    .theme-toggle-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: #f97316;
-    }
-
-    body.theme-light .theme-toggle {
-      background: rgba(243,244,246,0.9);
-      color: #111827;
-    }
-
-    .hero {
-      border-radius: 24px;
-      padding: 22px 18px 24px;
-      background: linear-gradient(135deg, #020617, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    body.theme-light .hero {
-      background: linear-gradient(135deg, #ffffff, #e5e7eb);
-      border-color: rgba(148,163,184,0.7);
-      box-shadow: 0 14px 30px rgba(148,163,184,0.5);
-    }
-
-    .hero-logo {
-      width: 76px;
-      height: 76px;
-      border-radius: 999px;
-      margin: 0 auto 10px;
-      background: radial-gradient(circle at 30% 20%, #fed7aa, #f97316);
-      border: 2px solid rgba(248, 250, 252, 0.35);
-      box-shadow:
-        0 0 0 6px rgba(248, 250, 252, 0.05),
-        0 18px 35px rgba(0,0,0,0.9);
+      background: radial-gradient(circle at 30% 20%, #fde68a, #b45309);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #111827;
-      font-weight: 900;
-      font-size: 20px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.18),
+                  0 10px 18px rgba(15, 23, 42, 0.85);
     }
 
-    .hero-title {
-      font-size: 20px;
-      letter-spacing: 0.18em;
+    .logo-text-main {
+      font-size: 13px;
+      font-weight: 600;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      letter-spacing: 0.07em;
     }
 
-    .hero-sub {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
+    .logo-text-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .logo-text-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    /* محتوى الصفحة */
+    .page-content {
+      flex: 1;
+      padding: 12px 14px 82px; /* مساحة للـ nav تحت */
+      overflow-y: auto;
+    }
+
+    /* قسم "قريباً" + العد التنازلي */
+    .coming-card {
+      background: rgba(15, 23, 42, 0.88);
+      border-radius: var(--card-radius);
+      padding: 16px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 14px 45px rgba(15, 23, 42, 0.95);
       margin-bottom: 14px;
     }
 
-    .coming-soon {
-      font-size: 26px;
+    .coming-title {
+      font-size: 18px;
       font-weight: 700;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      color: var(--accent);
     }
 
-    .coming-soon-sub {
-      font-size: 12px;
-      color: var(--muted);
+    /* تكبير 200% عن حجم النص العادي تقريباً */
+    .coming-countdown {
+      font-size: 26px;
+      font-weight: 700;
       margin-bottom: 10px;
     }
 
-    .countdown {
-      font-size: 13px;
-      margin-top: 6px;
+    .coming-subtext {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
-    .countdown strong {
-      color: var(--accent);
-    }
-
-    .section-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .card {
+    /* مكان الفيديو */
+    .video-block {
+      margin-top: 18px;
+      background: var(--accent-soft);
       border-radius: 16px;
-      padding: 12px 11px 12px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(245, 200, 91, 0.4);
+      padding: 10px;
+    }
+
+    .video-label {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .video-frame-placeholder {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: radial-gradient(circle at top, #111827, #020617);
+      border-radius: 12px;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    body.theme-light .card {
-      background: #ffffff;
-      border-color: rgba(209,213,219,0.9);
-      box-shadow: 0 10px 24px rgba(148,163,184,0.6);
-    }
-
-    .card-label {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .card-main {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .pill-soft {
-      align-self: flex-start;
-      margin-top: 2px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.85);
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    body.theme-light .pill-soft {
-      background: #f9fafb;
-      border-color: #e5e7eb;
-      color: #4b5563;
-    }
-
-    .btn-row {
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .btn-link {
-      border-radius: 999px;
-      padding: 11px 12px;
-      border: none;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-      white-space: nowrap;
-    }
-
-    .btn-primary-link {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #111827;
-      box-shadow: 0 14px 30px rgba(249, 115, 22, 0.55);
-    }
-
-    .btn-ghost-link {
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--text);
-      border: 1px solid rgba(55, 65, 81, 0.8);
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 1);
-    }
-
-    body.theme-light .btn-ghost-link {
-      background: #f9fafb;
-      color: #111827;
-      border-color: #e5e7eb;
-      box-shadow: 0 10px 26px rgba(148,163,184,0.6);
-    }
-
-    .btn-link:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.9);
-    }
-
-    .footer {
-      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
       text-align: center;
-      font-size: 11px;
-      color: var(--muted);
     }
 
-    .footer span {
-      color: var(--accent);
+    .video-frame-placeholder span {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
     }
 
-    .member-count {
+    /* باقي المحتوى أسفل الصفحة */
+    .bottom-section {
+      margin-top: 20px;
+      padding: 10px 10px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top right, rgba(248, 250, 252, 0.07), rgba(15, 23, 42, 0.92));
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .bottom-section h3 {
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    /* الـ Tabs السفلية */
+    .bottom-nav {
+      position: fixed;
+      inset-inline: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      padding: 6px 8px 8px;
+      background: linear-gradient(to top, rgba(3, 7, 18, 0.98), rgba(3, 7, 18, 0.9));
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      z-index: 40;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      border-radius: 999px;
+      padding: 6px 0;
+      font-size: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.08s ease;
+    }
+
+    .nav-item span.icon {
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .nav-item span.label {
+      letter-spacing: 0.03em;
+    }
+
+    .nav-item.active {
+      background: radial-gradient(circle at top, rgba(245, 200, 91, 0.14), rgba(15, 23, 42, 0.8));
+      color: var(--nav-active);
+      transform: translateY(-1px);
+    }
+
+    .nav-item.inactive {
+      color: var(--nav-muted);
+    }
+
+    /* صفحات أخرى (أصدقاء / محفظة / أداء) */
+    .hidden {
+      display: none !important;
+    }
+
+    .placeholder-page {
+      padding: 20px 14px 90px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .placeholder-page h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 4px 10px;
       font-size: 11px;
-      margin-top: 4px;
-      color: var(--muted);
+      margin-top: 10px;
+      background: rgba(15, 23, 42, 0.7);
     }
 
     @media (max-width: 380px) {
-      .hero-title {
-        font-size: 18px;
-        letter-spacing: 0.14em;
-      }
-      .hero-logo {
-        width: 66px;
-        height: 66px;
-        font-size: 18px;
+      .coming-countdown {
+        font-size: 22px;
       }
     }
   </style>
 </head>
-<body class="theme-dark">
-  <!-- شاشة تحميل -->
-  <div id="loading" class="loading-overlay" style="display: flex;">
-    <div class="loading-box">
-      <div class="spinner"></div>
-      <div>جاري تحميل Tadmor Token Mini App...</div>
+
+<body>
+  <div class="app-shell">
+
+    <!-- صفحة الرئيسية -->
+    <div id="page-home">
+      <div class="top-bar">
+        <div class="user-id" id="user-id-display">
+          ID: ——
+        </div>
+
+        <div class="logo-area">
+          <div class="logo-text-wrap">
+            <div class="logo-text-main">TADMOR TOKEN</div>
+            <div class="logo-text-sub">Palmyra • Web3 • Community</div>
+          </div>
+          <div class="logo-circle">TD</div>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div class="coming-card">
+          <div class="coming-title">قريباً</div>
+          <div class="coming-countdown" id="countdown">
+            الإطلاق بعد: — يوم — ساعة — دقيقة — ثانية
+          </div>
+          <div class="coming-subtext">
+            تجربة كاملة لعملة Tadmor Token قيد التحضير داخل بوت تيليجرام وتطبيق مصغّر.
+          </div>
+
+          <div class="video-block">
+            <div class="video-label">فيديو الإطلاق</div>
+            <!--
+              هنا تقدر تستبدل الـ div أدناه بـ iframe من يوتيوب مثلاً:
+              <iframe src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen></iframe>
+            -->
+            <div class="video-frame-placeholder">
+              <span>هنا سيتم عرض فيديو تعريفي أو فيديو إطلاق Tadmor Token داخل التطبيق المصغّر.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- أسفل الصفحة: مساحة لأي محتوى إضافي تحب تضيفه -->
+        <div class="bottom-section">
+          <h3>نظرة سريعة</h3>
+          <p>
+            هذه الصفحة الرئيسية لتدمر توكن داخل الـ Mini App.  
+            من هنا تقدر تربط:
+          </p>
+          <ul style="margin-top:6px; padding-right:18px; list-style: disc;">
+            <li>روابط الموقع الرسمي أو الـ Whitepaper.</li>
+            <li>آخر تحديثات الإطلاق أو الحملات.</li>
+            <li>مختصر عن المراحل القادمة أو الـ Token Utilities.</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="app">
-    <!-- شاشة الاشتراك -->
-    <div id="gate" class="gate-overlay">
-      <div class="gate-card">
-        <div class="gate-logo">TD</div>
-        <div class="gate-title">Tadmor Token</div>
-        <div class="gate-sub">
-          الرجاء الاشتراك بقناة التليجرام للدخول إلى التطبيق المصغّر
-        </div>
-
-        <div class="gate-buttons">
-          <button class="btn btn-primary" onclick="openChannel()">
-            📣 الاشتراك في القناة
-          </button>
-          <button class="btn btn-secondary" onclick="autoEnter()">
-            🚀 دخول تلقائي
-          </button>
-        </div>
-
-        <div class="gate-note">
-          إذا كنت مشتركاً بالفعل، اضغط "دخول تلقائي" للتحقّق وفتح التطبيق مباشرة.
+    <!-- صفحة الأصدقاء -->
+    <div id="page-friends" class="hidden">
+      <div class="placeholder-page">
+        <h2>الأصدقاء</h2>
+        <p>
+          هنا تقدر لاحقاً تضيف:
+          نظام دعوات، كود إحالة، ترتيب الأصدقاء حسب عدد النقاط، أو أي نظام مكافآت خاص بالمجتمع.
+        </p>
+        <div class="pill">
+          👥
+          <span>نظام الدعوات قيد التصميم</span>
         </div>
       </div>
     </div>
 
-    <!-- شريط علوي للتيم -->
-    <div class="top-bar">
-      <div class="theme-toggle" onclick="toggleTheme()">
-        <div class="theme-toggle-dot"></div>
-        <span id="theme-label">Dark</span>
+    <!-- صفحة المحفظة -->
+    <div id="page-wallet" class="hidden">
+      <div class="placeholder-page">
+        <h2>المحفظة</h2>
+        <p>
+          شاشة مختصرة تعرض رصيد Tadmor Token، مع روابط لربط محافظ (مثلاً Ton / EVM) 
+          أو فقط عرض الرصيد والنقاط داخل البوت.
+        </p>
+        <div class="pill">
+          👛
+          <span>محفظة مصغّرة داخل البوت</span>
+        </div>
       </div>
     </div>
 
-    <!-- محتوى التطبيق المصغر -->
-    <section class="hero">
-      <div class="hero-logo">TD</div>
-      <div class="hero-title">TADMOR TOKEN</div>
-      <div class="hero-sub">Palmyra • Web3 • Community</div>
-
-      <div class="coming-soon">قريباً</div>
-      <div class="coming-soon-sub">تجربة كاملة لعملة Tadmor Token قيد التحضير</div>
-
-      <div class="countdown" id="countdown">
-        الإطلاق بعد: <strong>—</strong>
-      </div>
-
-      <div class="member-count" id="member-count">
-        عدد أعضاء القناة: —
-      </div>
-    </section>
-
-    <section>
-      <div class="section-title">Overview</div>
-      <div class="cards">
-        <div class="card">
-          <div class="card-label">STATUS</div>
-          <div class="card-main">Phase 1 • Launch</div>
-          <div class="pill-soft">Community building</div>
-        </div>
-        <div class="card">
-          <div class="card-label">UTILITY</div>
-          <div class="card-main">Digital • Branding • Web3</div>
-          <div class="pill-soft">Inspired by Zenobia</div>
+    <!-- صفحة الأداء -->
+    <div id="page-performance" class="hidden">
+      <div class="placeholder-page">
+        <h2>الأداء</h2>
+        <p>
+          تقدر تحط هنا:
+          رسم بياني، إحصائيات المجتمع، عدد الأعضاء، أو أداء العملة (لو تم إدراجها).
+        </p>
+        <div class="pill">
+          📈
+          <span>لوحة تحكم قادمة</span>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section>
-      <div class="section-title">Actions</div>
-      <div class="btn-row">
-        <a
-          href="https://tadmortoken.github.io/"
-          target="_blank"
-          class="btn-link btn-primary-link"
-        >
-          🌐 الموقع الكامل
-        </a>
-        <a
-          href="https://t.me/"
-          target="_blank"
-          class="btn-link btn-ghost-link"
-        >
-          📣 قناة التليجرام
-        </a>
+    <!-- شريط التنقّل السفلي -->
+    <div class="bottom-nav">
+      <div class="nav-item active" data-target="home">
+        <span class="icon">🏠</span>
+        <span class="label">الرئيسية</span>
       </div>
-    </section>
-
-    <div class="footer">
-      Mini App for <span>Tadmor Token</span> • optimized for Telegram
+      <div class="nav-item inactive" data-target="friends">
+        <span class="icon">👥</span>
+        <span class="label">الأصدقاء</span>
+      </div>
+      <div class="nav-item inactive" data-target="wallet">
+        <span class="icon">👛</span>
+        <span class="label">المحفظة</span>
+      </div>
+      <div class="nav-item inactive" data-target="performance">
+        <span class="icon">📈</span>
+        <span class="label">الأداء</span>
+      </div>
     </div>
   </div>
 
   <script>
-    // ========= إعدادات مهمّة (عدّلها أنت) =========
-    const BOT_TOKEN = "8471678735:AAGLojDTjg0YFN7ONOwEfWvnCdE0Kk7e60Y";        // ← حط توكن البوت
-    const CHANNEL_USERNAME = "@tadmortoken";  // ← مثال: @TadmorTokenChannel
-    const CHANNEL_LINK = "https://t.me/tadmortoken"; // ← رابط القناة
-    const LAUNCH_DATE = new Date("2025-12-01T21:00:00Z");      // ← غيّر تاريخ الإطلاق
-
-    const tg = window.Telegram ? window.Telegram.WebApp : null;
-
-    if (tg) {
-      tg.expand(); // يفتح الويب آب بأقصى ارتفاع
-    }
-
-    window.addEventListener("load", () => {
-      // إخفاء شاشة اللودينغ بعد قليل
-      setTimeout(() => {
-        const loading = document.getElementById("loading");
-        if (loading) loading.style.display = "none";
-      }, 800);
-
-      startCountdown();
-      // تحقق تلقائي: لو المستخدم مشترك، يفتح التطبيق مباشرة بدون إظهار شاشة الاشتراك
-      initialMembershipCheck();
-    });
-
-    function openChannel() {
-      window.open(CHANNEL_LINK, "_blank");
-    }
-
-    function showLoading(msg) {
-      const loading = document.getElementById("loading");
-      if (!loading) return;
-      loading.style.display = "flex";
-      const textDivs = loading.getElementsByTagName("div");
-      const labelDiv = textDivs[textDivs.length - 1];
-      if (labelDiv && msg) labelDiv.textContent = msg;
-    }
-
-    function hideLoading() {
-      const loading = document.getElementById("loading");
-      if (loading) loading.style.display = "none";
-    }
-
-    async function autoEnter() {
-      showLoading("جارِ التحقّق من الاشتراك...");
-      await checkMembership(true);
-      hideLoading();
-    }
-
-    // تحقق تلقائي أول ما يفتح التطبيق (بدون تنبيه)
-    async function initialMembershipCheck() {
+    // --- قراءة ID المستخدم من Telegram WebApp إن كان متاحاً ---
+    (function () {
       try {
-        if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-          return;
-        }
-
-        const userId = tg.initDataUnsafe.user.id;
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}&user_id=${userId}`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (!data.ok) {
-          console.log("initial getChatMember error:", data);
-          return;
-        }
-
-        const status = data.result.status;
-
-        if (["member", "administrator", "creator"].includes(status)) {
-          // مشترك ✅ → افتح التطبيق فوراً
-          const gate = document.getElementById("gate");
-          if (gate) gate.style.display = "none";
-
-          fetchMemberCount();
-          markAppEntered();
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        const span = document.getElementById("user-id-display");
+        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+          span.textContent = "ID: " + tg.initDataUnsafe.user.id;
         } else {
-          console.log("User is not member yet (initial check).");
+          span.textContent = "ID: Guest";
         }
       } catch (e) {
-        console.error("initialMembershipCheck error:", e);
+        console.warn("Telegram WebApp not found, using Guest ID");
       }
-    }
+    })();
 
-    // checkMembership: يستخدم للدخول التلقائي مع رسائل للمستخدم
-    async function checkMembership(withAlerts) {
-      try {
-        if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-          if (withAlerts) alert("لم يتم الحصول على بيانات المستخدم من تليجرام. افتح التطبيق من داخل البوت.");
-          return;
-        }
-
-        const userId = tg.initDataUnsafe.user.id;
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}&user_id=${userId}`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (!data.ok) {
-          console.log("getChatMember error:", data);
-          if (withAlerts) alert("تعذّر التحقّق من الاشتراك. تأكد من إضافة البوت كمدير في القناة.");
-          return;
-        }
-
-        const status = data.result.status;
-
-        if (["member", "administrator", "creator"].includes(status)) {
-          const gate = document.getElementById("gate");
-          if (gate) gate.style.display = "none";
-
-          fetchMemberCount();
-          markAppEntered();
-        } else {
-          if (withAlerts) {
-            alert("لم يتم العثور عليك كعضو في القناة. تأكد من الاشتراك أولاً ثم اضغط دخول تلقائي.");
-          }
-        }
-      } catch (e) {
-        console.error("checkMembership error:", e);
-        if (withAlerts) alert("حدث خطأ أثناء التحقّق. حاول لاحقاً.");
-      }
-    }
-
-    async function fetchMemberCount() {
-      try {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMemberCount?chat_id=${encodeURIComponent(CHANNEL_USERNAME)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        const el = document.getElementById("member-count");
-        if (!el) return;
-
-        if (data.ok) {
-          el.textContent = "عدد أعضاء القناة: " + data.result;
-        } else {
-          el.textContent = "عدد أعضاء القناة: —";
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function startCountdown() {
+    // --- عد تنازلي بسيط (عدّل التاريخ كما تريد) ---
+    (function () {
+      // غيّر هذا التاريخ لتاريخ الإطلاق الفعلي
+      const LAUNCH_DATE = new Date("2026-01-01T00:00:00Z");
       const el = document.getElementById("countdown");
-      if (!el) return;
 
-      function update() {
+      function updateCountdown() {
         const now = new Date();
-        const diff = LAUNCH_DATE - now;
-
+        let diff = LAUNCH_DATE - now;
         if (diff <= 0) {
-          el.innerHTML = 'الإطلاق بعد: <strong>تم الإطلاق</strong>';
+          el.textContent = "تم الإطلاق! 🎉";
           return;
         }
-
         const sec = Math.floor(diff / 1000);
-        const days = Math.floor(sec / (3600 * 24));
-        const hours = Math.floor((sec % (3600 * 24)) / 3600);
+        const days = Math.floor(sec / 86400);
+        const hours = Math.floor((sec % 86400) / 3600);
         const minutes = Math.floor((sec % 3600) / 60);
         const seconds = sec % 60;
 
-        el.innerHTML =
-          'الإطلاق بعد: <strong>' +
+        el.textContent =
+          "الإطلاق بعد: " +
           days + " يوم " +
-          hours.toString().padStart(2, "0") + ":" +
-          minutes.toString().padStart(2, "0") + ":" +
-          seconds.toString().padStart(2, "0") +
-          "</strong>";
+          hours + " ساعة " +
+          minutes + " دقيقة " +
+          seconds + " ثانية";
       }
 
-      update();
-      setInterval(update, 1000);
-    }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
 
-    function toggleTheme() {
-      const body = document.body;
-      const label = document.getElementById("theme-label");
-      const isDark = body.classList.contains("theme-dark");
-      if (isDark) {
-        body.classList.remove("theme-dark");
-        body.classList.add("theme-light");
-        if (label) label.textContent = "Light";
-      } else {
-        body.classList.remove("theme-light");
-        body.classList.add("theme-dark");
-        if (label) label.textContent = "Dark";
-      }
-    }
+    // --- التنقّل بين الصفحات (Bottom Nav) ---
+    (function () {
+      const pages = {
+        home: document.getElementById("page-home"),
+        friends: document.getElementById("page-friends"),
+        wallet: document.getElementById("page-wallet"),
+        performance: document.getElementById("page-performance"),
+      };
 
-    function markAppEntered() {
-      try {
-        if (tg) {
-          const payload = {
-            event: "entered_app",
-            ts: Date.now()
-          };
-          tg.sendData(JSON.stringify(payload));
-        }
-      } catch (e) {
-        console.error("sendData error:", e);
-      }
-    }
+      const navItems = document.querySelectorAll(".nav-item");
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const target = item.getAttribute("data-target");
+
+          // إظهار الصفحة المطلوبة وإخفاء الباقي
+          Object.keys(pages).forEach((key) => {
+            if (key === target) {
+              pages[key].classList.remove("hidden");
+            } else {
+              pages[key].classList.add("hidden");
+            }
+          });
+
+          // تحديث حالة الأزرار
+          navItems.forEach((el) => {
+            el.classList.remove("active");
+            el.classList.add("inactive");
+          });
+          item.classList.add("active");
+          item.classList.remove("inactive");
+        });
+      });
+    })();
   </script>
 </body>
 </html>
