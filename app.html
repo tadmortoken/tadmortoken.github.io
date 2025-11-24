@@ -95,6 +95,15 @@
     }
 
     /* الرئيسية */
+    .coming-card {
+      background-color: #020617;
+      border-radius: 16px;
+      border: 1px solid #111827;
+      padding: 14px 12px;
+      margin-bottom: 16px;
+    }
+
+    /* قريباً - كبيرة، في النص، مع لمعة + نبض */
     .coming-title {
       font-size: 26px;
       font-weight: 700;
@@ -102,33 +111,27 @@
       text-align: center;
       margin-bottom: 6px;
 
-      /* اللمعة الذهبية */
       text-shadow:
-      0 0 6px rgba(250, 204, 21, 0.45),
-      0 0 12px rgba(250, 204, 21, 0.3);
+        0 0 6px rgba(250, 204, 21, 0.45),
+        0 0 12px rgba(250, 204, 21, 0.3);
 
-      /* تأثير النبض */
       animation: pulseSoon 3s infinite ease-in-out;
-      }
-
-
-    .coming-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #facc15;
-      margin-bottom: 6px;
     }
 
-    /* تكبير العد 200% تقريباً */
+    /* تكبير العد 200% تقريباً + توسيط */
     .coming-countdown {
       font-size: 26px;
       font-weight: 700;
       margin-bottom: 8px;
+      text-align: center;
+      text-shadow:
+        0 0 4px rgba(15, 23, 42, 0.8);
     }
 
     .coming-sub {
       font-size: 12px;
       color: #9ca3af;
+      text-align: center;
     }
 
     .video-block {
@@ -250,6 +253,28 @@
       background-color: #030712;
       color: #facc15;
     }
+
+    /* أنيميشن "قريباً" */
+    @keyframes pulseSoon {
+      0% {
+        transform: scale(1);
+        text-shadow:
+          0 0 6px rgba(250, 204, 21, 0.45),
+          0 0 12px rgba(250, 204, 21, 0.3);
+      }
+      50% {
+        transform: scale(1.08);
+        text-shadow:
+          0 0 12px rgba(250, 204, 21, 0.7),
+          0 0 20px rgba(250, 204, 21, 0.45);
+      }
+      100% {
+        transform: scale(1);
+        text-shadow:
+          0 0 6px rgba(250, 204, 21, 0.45),
+          0 0 12px rgba(250, 204, 21, 0.3);
+      }
+    }
   </style>
 </head>
 <body>
@@ -355,19 +380,34 @@
   </div>
 
   <script>
-    // قراءة ID المستخدم من Telegram WebApp إن وجد
+    // --- قراءة ID المستخدم من Telegram WebApp + fallback من الرابط ---
     (function () {
       var span = document.getElementById("user-id-display");
+      var idText = "ID: Guest";
+
       try {
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-          var uid = window.Telegram.WebApp.initDataUnsafe.user.id;
-          span.textContent = "ID: " + uid;
-        } else {
-          span.textContent = "ID: Guest";
+        // 1) محاولة قراءة من Telegram WebApp
+        if (window.Telegram && window.Telegram.WebApp) {
+          var tg = window.Telegram.WebApp;
+          tg.ready(); // إعلام تيليجرام أن الصفحة جاهزة
+
+          if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+            idText = "ID: " + tg.initDataUnsafe.user.id;
+          }
+        }
+
+        // 2) Fallback: لو حاب تمرر user_id أو id في رابط الصفحة
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("user_id")) {
+          idText = "ID: " + params.get("user_id");
+        } else if (params.get("id")) {
+          idText = "ID: " + params.get("id");
         }
       } catch (e) {
-        span.textContent = "ID: Guest";
+        console.warn("Telegram WebApp or params not available:", e);
       }
+
+      span.textContent = idText;
     })();
 
     // عدّ تنازلي بسيط (غيّر التاريخ حسب ما تريد)
@@ -442,4 +482,3 @@
   </script>
 </body>
 </html>
-
